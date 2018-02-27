@@ -1,0 +1,494 @@
+---
+title: "Non Metric Space ( Approximate ) Library in R"
+author: "Lampros Mouselimis"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Non Metric Space ( Approximate ) Library in R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+The **nmslibR** package is a wrapper of [*NMSLIB*](https://github.com/searchivarius/nmslib), which according to the authors "... is a similarity search library and a toolkit for evaluation of similarity search methods. The goal of the project is to create an effective and comprehensive toolkit for searching in generic non-metric spaces. Being comprehensive is important, because no single method is likely to be sufficient in all cases. Also note that exact solutions are hardly efficient in high dimensions and/or non-metric spaces. Hence, the main focus is on approximate methods".
+
+I've searched for some time (before wrapping NMSLIB) for a nearest neighbor library which can work with high dimensional data and can scale with big datasets. I've already written a package for k-nearest-neighbor search ([KernelKnn](https://CRAN.R-project.org/package=KernelKnn)), however, it's based on brute force and unfortunately, it requires a certain computation time if the data consists of many rows. The *nmslibR* package, besides the main functionality of the NMSLIB python library, also includes an Approximate Kernel k-nearest function, which as I will show in the next lines is both fast and accurate. A comparison of NMSLIB with other popular approximate k-nearest-neighbor methods can be found [here](https://github.com/erikbern/ann-benchmarks).
+
+<br>
+
+The NMSLIB Library,
+
+* is a collection of search methods for generic spaces
+* has both metric and non-metric search algorithms
+* has both exact and approximate search algorithms
+* is an evaluation toolkit that simplifies experimentation and processing of results
+* is extensible (new spaces and methods can be added)
+* It was designed to be efficient
+
+<br>
+
+Details can be found in the [NMSLIB-manual](https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf).
+
+
+<br>
+
+#### The nmslibR package
+
+<br> 
+
+The *nmslibR* package includes the following R6-class / functions,
+
+<br>
+
+##### **class** 
+
+
+<br>
+
+
+|    NMSlib            | 
+| :------------------: | 
+|   Knn_Query()        | 
+|   knn_Query_Batch()  | 
+|   save_Index()       |
+
+
+
+<br>
+  
+  
+##### **functions**
+
+
+<br>
+
+| KernelKnn_nmslib() |
+| :------------------------|
+
+| KernelKnnCV_nmslib() |
+| :------------------------|
+
+| dgCMatrix_2scipy_sparse() |
+| :------------------------ |
+
+| mat_2scipy_sparse() |
+| :-------------------|
+
+<br>
+
+
+The package documentation includes details and examples for the R6-class and functions. I'll start explaining how a user can work with sparse matrices as the input can also be a **python sparse matrix**. 
+
+<br>
+
+
+#### Sparse matrices as input
+
+<br>
+
+The nmslibR package includes two functions (**mat_2scipy_sparse** and **dgCMatrix_2scipy_sparse**) which allow the user to convert from a *matrix* / *dgCMatrix* to a *scipy sparse matrix*,
+
+<br>
+
+```{r, eval = F, echo = T}
+
+library(nmslibR)
+
+# conversion from a matrix object to a scipy sparse matrix
+#----------------------------------------------------------
+
+set.seed(1)
+
+x = matrix(runif(1000), nrow = 100, ncol = 10)
+
+x_sparse = mat_2scipy_sparse(x, format = "sparse_row_matrix")
+
+print(dim(x))
+
+[1] 100  10
+
+print(x_sparse$shape)
+
+(100, 10)
+  
+```
+
+<br>
+
+
+```{r, eval = F, echo = T}
+
+# conversion from a dgCMatrix object to a scipy sparse matrix
+#-------------------------------------------------------------
+
+data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
+
+# by default column-oriented format
+
+dgcM = Matrix::Matrix(data = data, nrow = 3,
+
+                      ncol = 3, byrow = TRUE,
+
+                      sparse = TRUE)
+
+print(dim(dgcM))
+
+[1] 3 3
+
+x_sparse = dgCMatrix_2scipy_sparse(dgcM)
+
+print(x_sparse$shape)
+
+(3, 3)
+  
+```
+
+
+<br>
+
+
+#### The NMSlib R6-class
+
+
+<br>
+
+The parameter settings for the *NMSlib* R6-class can be found in the [Non-Metric Space Library (NMSLIB) Manual](https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf), which explains the NMSLIB Library in detail. In the following code chunk, I'll show the functionality of the methods included using a [data set from my Github repository](https://github.com/mlampros/DataSets) (it appears as [.ipynb notebook in the nmslib Github repository](https://github.com/searchivarius/nmslib/blob/master/python_bindings/notebooks/search_sift_uint8.ipynb))
+
+<br>
+
+```{r, eval = F, echo = T}
+
+
+library(nmslibR)
+
+
+# download the data from my Github repository (tested on a Linux OS)
+#-------------------------------------------------------------------
+
+system("wget https://raw.githubusercontent.com/mlampros/DataSets/master/sift_10k.txt")
+
+
+# load the data in the R session
+#-------------------------------
+
+sift_10k = read.table("~/sift_10k.txt", quote="\"", comment.char="")
+
+
+# index parameters
+#-----------------
+
+M = 15
+efC = 100
+num_threads = 5
+
+index_params = list('M'= M, 'indexThreadQty' = num_threads, 'efConstruction' = efC, 
+                    
+                    'post' = 0, 'skip_optimized_index' = 1 )
+
+
+# query-time parameters
+#----------------------
+
+efS = 100
+
+query_time_params = list('efSearch' = efS)
+
+
+# Number of neighbors 
+#--------------------
+
+K = 100
+
+
+# space to use
+#---------------
+
+space_name = 'l2sqr_sift'     
+
+
+# initialize NMSlib [ the data should be a matrix ]
+#--------------------------------------------------
+
+init_nms = NMSlib$new(input_data = as.matrix(sift_10k), Index_Params = index_params, 
+                      
+                      Time_Params = query_time_params, space = space_name, 
+                      
+                      space_params = NULL, method = 'hnsw', 
+                      
+                      data_type = 'DENSE_UINT8_VECTOR', dtype = 'INT',
+                      
+                      index_filepath = NULL, print_progress = FALSE)
+
+```
+
+<br>
+
+```{r, eval = F, echo = T}
+
+# returns a 1-dimensional vector
+#-------------------------------
+
+init_nms$Knn_Query(query_data_row = as.matrix(sift_10k[1, ]), k = 5)
+
+```
+
+<br>
+
+```{r, eval = F, echo = T}
+
+[[1]]
+[1]    2    6 4585 9256  140                    # indices
+
+[[2]]
+[1] 18724 24320 68158 69067 70321               # distances
+ 
+```
+
+<br>
+
+```{r, eval = F, echo = T}
+
+# returns knn's for all data
+#---------------------------
+
+all_dat = init_nms$knn_Query_Batch(as.matrix(sift_10k), k = 5, num_threads = 1)
+
+str(all_dat)
+
+```
+
+<br>
+
+```{r, eval = F, echo = T}
+
+# a list of indices and distances for all observations
+#------------------------------------------------------
+
+List of 2
+ $ knn_idx : num [1:10000, 1:5] 3 4 1 2 13 14 1 2 30 31 ...
+ $ knn_dist: num [1:10000, 1:5] 18724 14995 18724 14995 21038 ...
+
+```
+
+<br> 
+
+Details on the various methods and parameter settings can be found in the [manual of the NMSLIB python Library](https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf). 
+
+
+<br>
+
+#### KernelKnn using the nmslibR package
+
+<br>
+
+
+In the [Vignette of the KernelKnn](https://CRAN.R-project.org/package=KernelKnn) (*Image classification of the MNIST and CIFAR-10 data using KernelKnn and HOG (histogram of oriented gradients)*) package I experimented with the **mnist dataset** and a cross-validated kernel k-nearest-neighbors model gave **98.4 % accuracy** based on **HOG** (histogram of oriented gradients) features. However, it took almost **30 minutes** (depending on the system configuration) to complete using **6 threads**. I've implemented a similar function using NMSLIB (**KernelKnnCV_nmslib**), so in the next code chunk I'll use the *same parameter setting* and I'll compare *computation time* and *accuracy*. 
+
+<br>
+
+First load the data,
+
+<br>
+
+```{r, eval = F, echo = T}
+
+# using system('wget..') on a linux OS 
+
+system("wget https://raw.githubusercontent.com/mlampros/DataSets/master/mnist.zip")             
+
+mnist <- read.table(unz("mnist.zip", "mnist.csv"), nrows = 70000, header = T, 
+                    
+                    quote = "\"", sep = ",")
+
+```
+
+<br>
+
+
+```{r, eval = F, echo = T}
+
+X = mnist[, -ncol(mnist)]
+dim(X)
+
+## [1] 70000   784
+
+# the 'KernelKnnCV_nmslib' function requires that the labels are numeric and start from 1 : Inf
+
+y = mnist[, ncol(mnist)] + 1          
+table(y)
+
+## y
+##    1    2    3    4    5    6    7    8    9   10 
+## 6903 7877 6990 7141 6824 6313 6876 7293 6825 6958
+
+
+# evaluation metric
+
+acc = function (y_true, preds) {
+  
+  out = table(y_true, max.col(preds, ties.method = "random"))
+  
+  acc = sum(diag(out))/sum(out)
+  
+  acc
+}
+
+```
+<br>
+
+then compute the HOG features,
+
+<br>
+
+```{r, eval = F, echo = T}
+
+library(OpenImageR)
+
+hog = HOG_apply(X, cells = 6, orientations = 9, rows = 28, columns = 28, threads = 6)
+
+## 
+## time to complete : 2.101281 secs  
+
+dim(hog)
+
+## [1] 70000   324
+
+```
+<br>
+
+then compute the **approximate** kernel k-nearest-neighbors using the **cosine** distance,
+
+<br>
+
+
+```{r, eval = F, echo = T}
+
+# parameters for 'KernelKnnCV_nmslib'
+#------------------------------------
+
+M = 30
+efC = 100
+num_threads = 6
+
+index_params = list('M'= M, 'indexThreadQty' = num_threads, 'efConstruction' = efC,
+                    
+                    'post' = 0, 'skip_optimized_index' = 1 )
+
+
+efS = 100
+
+query_time_params = list('efSearch' = efS)
+
+
+# approximate kernel knn
+#-----------------------
+
+fit_hog = KernelKnnCV_nmslib(hog, y, k = 20, folds = 4, h = 1, 
+                             weights_function = 'biweight_tricube_MULT', 
+                             Levels = sort(unique(y)), Index_Params = index_params,
+                             Time_Params = query_time_params, space = "cosinesimil", 
+                             space_params = NULL, method = "hnsw", data_type = "DENSE_VECTOR", 
+                             dtype = "FLOAT", index_filepath = NULL, print_progress = FALSE, 
+                             num_threads = 6, seed_num = 1)
+
+
+# cross-validation starts .. 
+
+# |=================================================================================| 100%
+
+# time to complete : 32.88805 secs 
+
+
+str(fit_hog)
+
+
+```
+
+<br>
+
+```{r, eval = F, echo = T}
+
+List of 2
+ $ preds:List of 4
+  ..$ : num [1:17500, 1:10] 0 0 0 0 0 0 0 0 0 0 ...
+  ..$ : num [1:17500, 1:10] 0 0 0 0 1 ...
+  ..$ : num [1:17500, 1:10] 0 0 0 0 0 ...
+  ..$ : num [1:17500, 1:10] 0 0 0 0 0 0 0 0 0 0 ...
+ $ folds:List of 4
+  ..$ fold_1: int [1:17500] 49808 21991 42918 7967 49782 28979 64440 49809 30522 36673 ...
+  ..$ fold_2: int [1:17500] 51122 9469 58021 45228 2944 58052 65074 17709 2532 31262 ...
+  ..$ fold_3: int [1:17500] 33205 40078 68177 32620 52721 18981 19417 53922 19102 67206 ...
+  ..$ fold_4: int [1:17500] 28267 41652 28514 34525 68534 13294 48759 47521 69395 41408 ...
+
+```
+
+<br>
+
+```{r, eval = F, echo = T}
+
+acc_fit_hog = unlist(lapply(1:length(fit_hog$preds), 
+                            
+                            function(x) acc(y[fit_hog$folds[[x]]], 
+                                            
+                                            fit_hog$preds[[x]])))
+acc_fit_hog
+
+## [1] 0.9768000 0.9786857 0.9763429 0.9760000
+
+cat('mean accuracy for hog-features using cross-validation :', mean(acc_fit_hog), '\n')
+
+## mean accuracy for hog-features using cross-validation : 0.9769571
+
+```
+<br>
+
+It took approx. **33 seconds** to return with an accuracy of **97.7 %** . Almost **47 times faster** than KernelKnn's corresponding function (brute force) with a **slight lower accuracy** rate (the *braycurtis* distance metric might be better suited for this dataset).
+
+I also run the corresponding brute-force algorithm of the NMSLIB Library by setting the *method* parameter to **seq_search**,
+
+<br>
+
+```{r, eval = F, echo = T}
+
+
+# brute force of NMSLIB   [ here we set 'Index_Params' and 'Time_Params' to NULL ]
+#----------------------
+
+fit_hog_seq = KernelKnnCV_nmslib(hog, y, k = 20, folds = 4, h = 1, 
+                                weights_function = 'biweight_tricube_MULT', 
+                                Levels = sort(unique(y)), Index_Params = NULL,
+                                Time_Params = NULL, space = "cosinesimil", 
+                                space_params = NULL, method = "seq_search", 
+                                data_type = "DENSE_VECTOR", dtype = "FLOAT", 
+                                index_filepath = NULL, print_progress = FALSE, 
+                                num_threads = 6, seed_num = 1)
+
+
+# cross-validation starts .. 
+
+# |=================================================================================| 100%
+
+# time to complete : 4.506177 mins  
+
+
+acc_fit_hog_seq = unlist(lapply(1:length(fit_hog_seq$preds), 
+                                
+                                function(x) acc(y[fit_hog_seq$folds[[x]]], 
+                                                
+                                                fit_hog_seq$preds[[x]])))
+acc_fit_hog_seq
+
+## [1] 0.9785143 0.9802286 0.9783429 0.9784571
+
+cat('mean accuracy for hog-features using cross-validation :', mean(acc_fit_hog_seq), '\n')
+
+## mean accuracy for hog-features using cross-validation : 0.9788857
+
+
+```
+
+<br>
+
+The brute-force algorithm of the NMSLIB Library is almost **6 times faster** than KernelKnn giving an accuracy of approx. **97.9 %**.
+
