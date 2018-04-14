@@ -1,5 +1,56 @@
+
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
-sudo: false
+language: r
+compiler: gcc
+pandoc_version: 1.18
+
+sudo: required
 cache: packages
+
+addons:
+  apt:
+    packages:
+      - python2.7
+
+env:
+  global:
+    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+    
+before_install:
+
+  - sudo apt-get install r-base-dev
+  - sudo pip install --upgrade pip setuptools
+  - sudo pip install -U numpy
+  - sudo pip install --upgrade scipy
+  - sudo apt-get install libboost-all-dev libgsl0-dev libeigen3-dev
+  - sudo apt-get install cmake
+  - sudo pip install nmslib
+  - sudo apt-get update
+ 
+
+r_packages:
+  - Rcpp
+  - RcppArmadillo
+  - devtools
+  - roxygen2
+  - testthat
+  - reticulate
+  - R6
+  - Matrix
+  - covr
+  - knitr
+  - rmarkdown
+  
+after_success:
+  - Rscript -e 'covr::codecov(quiet = FALSE)'
+  
+warnings_are_errors: false
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+    
+    

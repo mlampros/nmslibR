@@ -1,10 +1,12 @@
 Package: nmslibR
 Type: Package
 Title: Non Metric Space (Approximate) Library
-Version: 1.0.0
-Date: 2018-02-27
+Version: 1.0.1
+Date: 2018-04-14
 Authors@R: c( person("Lampros", "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre")), person("B.", "Naidan", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("L.", "Boytsov", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("Yu.", "Malkov", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("B.", "Frederickson", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("D.", "Novak", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)") )
 Maintainer: Lampros Mouselimis <mouselimislampros@gmail.com>
+BugReports: https://github.com/mlampros/nmslibR/issues
+URL: https://github.com/mlampros/nmslibR
 Description: A Non-Metric Space Library ('NMSLIB' <https://github.com/searchivarius/nmslib>) wrapper, which according to the authors "is an efficient cross-platform similarity search library and a toolkit for evaluation of similarity search methods. The goal of the 'NMSLIB' <https://github.com/searchivarius/nmslib> Library is to create an effective and comprehensive toolkit for searching in generic non-metric spaces. Being comprehensive is important, because no single method is likely to be sufficient in all cases. Also note that exact solutions are hardly efficient in high dimensions and/or non-metric spaces. Hence, the main focus is on approximate methods". The wrapper also includes Approximate Kernel k-Nearest-Neighbor functions based on the 'NMSLIB' <https://github.com/searchivarius/nmslib> 'Python' Library.
 License: GPL-3
 Copyright: inst/COPYRIGHTS

@@ -1,9 +1,15 @@
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/nmslibR)](http://cran.r-project.org/package=nmslibR)
+[![Travis-CI Build Status](https://travis-ci.org/mlampros/nmslibR.svg?branch=master)](https://travis-ci.org/mlampros/nmslibR)
+[![codecov.io](https://codecov.io/github/mlampros/nmslibR/coverage.svg?branch=master)](https://codecov.io/github/mlampros/nmslibR?branch=master)
+[![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/nmslibR?color=blue)](http://www.r-pkg.org/pkg/nmslibR)
+
+
 ## nmslibR (Non Metric Space Library in R)
 <br>
 
 
-The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](https://github.com/searchivarius/nmslib) *python* package. More details on the functionality of the *nmslibR* package can be found in the package Documentation and Vignette.
+The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](https://github.com/searchivarius/nmslib) *python* package. More details on the functionality of the *nmslibR* package can be found in the [blog-post](http://mlampros.github.io/2018/02/27/the_nmslibR_package/) and in the package Documentation.
 
 
 <br>
@@ -256,3 +262,20 @@ install.packages('nmslibR')
 
 ```
 <br>
+
+and to download the latest version from Github use the *install_github* function of the devtools package,
+<br><br>
+
+```R
+
+devtools::install_github(repo = 'mlampros/nmslibR')
+
+```
+<br>
+Use the following link to report bugs/issues,
+<br><br>
+
+[https://github.com/mlampros/nmslibR/issues](https://github.com/mlampros/nmslibR/issues)
+
+<br>
+

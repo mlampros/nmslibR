@@ -20,22 +20,25 @@ The dgCMatrix class is a class of sparse numeric matrices in the compressed, spa
 \examples{
 
 if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
+  
+  if (Sys.info()["sysname"] != 'Darwin') {
 
-  library(nmslibR)
-
-  data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
-
-  dgcM = Matrix::Matrix(data = data, nrow = 3,
-
-                        ncol = 3, byrow = TRUE,
-
-                        sparse = TRUE)
-
-  print(dim(dgcM))
-
-  res = dgCMatrix_2scipy_sparse(dgcM)
-
-  print(res$shape)
+    library(nmslibR)
+  
+    data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
+  
+    dgcM = Matrix::Matrix(data = data, nrow = 3,
+  
+                          ncol = 3, byrow = TRUE,
+  
+                          sparse = TRUE)
+  
+    print(dim(dgcM))
+  
+    res = dgCMatrix_2scipy_sparse(dgcM)
+  
+    print(res$shape)
+  }
 }
 }
 \references{

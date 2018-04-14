@@ -90,37 +90,44 @@ testthat::test_that("the 'mat_2scipy_sparse' returns a scipy sparse matrix", {
 # conversion of an R 'dgCMatrix' to a scipy sparse matrix
 #--------------------------------------------------------
 
-testthat::test_that("the 'dgCMatrix_2scipy_sparse' returns an error in case that the input object is not of type 'dgCMatrix'", {
+# run the following tests on all operating systems except for 'Macintosh'   
+# [ otherwise it will raise an error due to the fact that the 'scipy-sparse' library ( applied on 'dgCMatrix_2scipy_sparse' function) 
+#   on CRAN is not upgraded and the older version includes a bug ('TypeError : could not interpret data type') ]
+# reference : https://github.com/scipy/scipy/issues/5353
 
-  skip_test_if_no_module("scipy")
+if (Sys.info()["sysname"] != 'Darwin') {
 
-  mt = matrix(runif(20), nrow = 5, ncol = 4)
-
-  testthat::expect_error( dgCMatrix_2scipy_sparse(mt) )
-})
-
-
-testthat::test_that("the 'dgCMatrix_2scipy_sparse' returns the correct output", {
-
-  skip_test_if_no_module("scipy")
-
-  data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
-
-  dgcM = Matrix::Matrix(data = data, nrow = 3,
-
-                        ncol = 3, byrow = TRUE,
-
-                        sparse = TRUE)
-
-  res = dgCMatrix_2scipy_sparse(dgcM)
-
-  cl_obj = class(res)[1]                                                             # class is python object
-
-  validate_dims = sum(dim(dgcM) == unlist(reticulate::py_to_r(res$shape))) == 2      # sparse matrix has same dimensions as input R sparse matrix
-
-  testthat::expect_true( validate_dims && cl_obj == "scipy.sparse.csc.csc_matrix" )
-})
-
+  testthat::test_that("the 'dgCMatrix_2scipy_sparse' returns an error in case that the input object is not of type 'dgCMatrix'", {
+  
+    skip_test_if_no_module("scipy")
+  
+    mt = matrix(runif(20), nrow = 5, ncol = 4)
+  
+    testthat::expect_error( dgCMatrix_2scipy_sparse(mt) )
+  })
+  
+  
+  testthat::test_that("the 'dgCMatrix_2scipy_sparse' returns the correct output", {
+  
+    skip_test_if_no_module("scipy")
+  
+    data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
+  
+    dgcM = Matrix::Matrix(data = data, nrow = 3,
+  
+                          ncol = 3, byrow = TRUE,
+  
+                          sparse = TRUE)
+  
+    res = dgCMatrix_2scipy_sparse(dgcM)
+  
+    cl_obj = class(res)[1]                                                             # class is python object
+  
+    validate_dims = sum(dim(dgcM) == unlist(reticulate::py_to_r(res$shape))) == 2      # sparse matrix has same dimensions as input R sparse matrix
+  
+    testthat::expect_true( validate_dims && cl_obj == "scipy.sparse.csc.csc_matrix" )
+  })
+}
 
 
 # tests for 'NMSlib' class

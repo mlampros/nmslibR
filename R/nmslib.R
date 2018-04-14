@@ -58,24 +58,27 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 #' @importFrom Matrix Matrix
 #' @references https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgCMatrix-class.html, https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix
 #' @examples
-#'
+#' 
 #' if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
-#'
-#'   library(nmslibR)
-#'
-#'   data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
-#'
-#'   dgcM = Matrix::Matrix(data = data, nrow = 3,
-#'
-#'                         ncol = 3, byrow = TRUE,
-#'
-#'                         sparse = TRUE)
-#'
-#'   print(dim(dgcM))
-#'
-#'   res = dgCMatrix_2scipy_sparse(dgcM)
-#'
-#'   print(res$shape)
+#'   
+#'   if (Sys.info()["sysname"] != 'Darwin') {
+#' 
+#'     library(nmslibR)
+#'   
+#'     data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
+#'   
+#'     dgcM = Matrix::Matrix(data = data, nrow = 3,
+#'   
+#'                           ncol = 3, byrow = TRUE,
+#'   
+#'                           sparse = TRUE)
+#'   
+#'     print(dim(dgcM))
+#'   
+#'     res = dgCMatrix_2scipy_sparse(dgcM)
+#'   
+#'     print(res$shape)
+#'   }
 #' }
 
 dgCMatrix_2scipy_sparse = function(dgc_mat_object) {
