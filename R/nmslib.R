@@ -27,6 +27,8 @@
 #' }
 
 mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
+  
+  if (!inherits(x, "matrix")) stop("the 'x' parameter should be of type 'matrix'", call. = F)
 
   if (format == 'sparse_column_matrix') {
 
@@ -44,19 +46,19 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 
 
 
-#' conversion of an R dgCMatrix to a scipy sparse matrix
+#' conversion of an R sparse matrix to a scipy sparse matrix
 #'
 #'
-#' @param dgc_mat_object an R sparse matrix of type \emph{dgCMatrix}
+#' @param R_sparse_matrix an R sparse matrix. Acceptable input objects are either a \emph{dgCMatrix} or a \emph{dgRMatrix}.
 #' @details
-#' This function allows the user to convert an R \emph{dgCMatrix} to a scipy sparse matrix (\emph{scipy.sparse.csc_matrix}). This is useful because the \emph{nmslibR} package accepts besides an R dense matrix also python sparse matrices as input.
+#' This function allows the user to convert either an R \emph{dgCMatrix} or a \emph{dgRMatrix} to a scipy sparse matrix (\emph{scipy.sparse.csc_matrix} or \emph{scipy.sparse.csr_matrix}). This is useful because the \emph{nmslibR} package accepts besides an R dense matrix also python sparse matrices as input.
 #'
-#' The dgCMatrix class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. In this implementation the non-zero elements in the columns are sorted into increasing row order. dgCMatrix is the “standard” class for sparse numeric matrices in the \emph{Matrix} package.
+#' The \emph{dgCMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. The \emph{dgRMatrix} class is a class of sparse numeric matrices in the compressed, sparse, \emph{column-oriented format}. 
 #'
 #' @export
 #' @import reticulate
 #' @importFrom Matrix Matrix
-#' @references https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgCMatrix-class.html, https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix
+#' @references https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgCMatrix-class.html, https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgRMatrix-class.html, https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix
 #' @examples
 #' 
 #' if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
@@ -64,6 +66,10 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 #'   if (Sys.info()["sysname"] != 'Darwin') {
 #' 
 #'     library(nmslibR)
+#'   
+#'   
+#'     # 'dgCMatrix' sparse matrix
+#'     #--------------------------
 #'   
 #'     data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
 #'   
@@ -75,18 +81,41 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 #'   
 #'     print(dim(dgcM))
 #'   
-#'     res = dgCMatrix_2scipy_sparse(dgcM)
+#'     res = TO_scipy_sparse(dgcM)
 #'   
 #'     print(res$shape)
+#'     
+#'     
+#'     # 'dgRMatrix' sparse matrix
+#'     #--------------------------
+#'     
+#'     dgrM = as(dgcM, "RsparseMatrix")
+#'     
+#'     print(dim(dgrM))
+#'   
+#'     res_dgr = TO_scipy_sparse(dgrM)
+#'   
+#'     print(res_dgr$shape)
 #'   }
 #' }
 
-dgCMatrix_2scipy_sparse = function(dgc_mat_object) {
-
-  if (!inherits(dgc_mat_object, "dgCMatrix")) { stop("the 'dgc_mat_object' parameter should be of type 'dgCMatrix' sparse matrix", call. = F) }
-
-  py_obj = SCP$sparse$csc_matrix(reticulate::tuple(dgc_mat_object@x, dgc_mat_object@i, dgc_mat_object@p), shape = reticulate::tuple(dgc_mat_object@Dim[1], dgc_mat_object@Dim[2]))
-
+TO_scipy_sparse = function(R_sparse_matrix) {
+  
+  if (inherits(R_sparse_matrix, "dgCMatrix")) {
+    
+    py_obj = SCP$sparse$csc_matrix(reticulate::tuple(R_sparse_matrix@x, R_sparse_matrix@i, R_sparse_matrix@p), shape = reticulate::tuple(R_sparse_matrix@Dim[1], R_sparse_matrix@Dim[2]))
+  }
+  
+  else if (inherits(R_sparse_matrix, "dgRMatrix")) {
+    
+    py_obj = SCP$sparse$csr_matrix(reticulate::tuple(R_sparse_matrix@x, R_sparse_matrix@j, R_sparse_matrix@p), shape = reticulate::tuple(R_sparse_matrix@Dim[1], R_sparse_matrix@Dim[2]))
+  }
+  
+  else {
+    
+    stop("the 'R_sparse_matrix' parameter should be either a 'dgCMatrix' or a 'dgRMatrix' sparse matrix", call. = F) 
+  }
+  
   return(py_obj)
 }
 
@@ -310,11 +339,39 @@ NMSlib <- R6::R6Class("NMSlib",
 
 
 
+#' import internal functions from the KernelKnn package
+#' 
+#' @importFrom utils getFromNamespace
+#' @keywords internal
+
+import_internal = function(function_name) {
+  
+  utils::getFromNamespace(function_name, "KernelKnn")
+}
+
+
+
 #' inner function to compute kernels, extract weights and return predictions
 #'
 #' @keywords internal
 
 inner_kernel_function = function(y_matrix, dist_matrix, Levels, weights_function, h) {
+  
+  #------------------------------------ import internal functions from KernelKnn
+  
+  normalized = import_internal('normalized')
+  func_tbl_dist = import_internal('func_tbl_dist')
+  func_tbl = import_internal('func_tbl')
+  FUNCTION_weights = import_internal('FUNCTION_weights')
+  switch_secondary = import_internal('switch_secondary')
+  switch.ops = import_internal('switch.ops')
+  FUN_kernels = import_internal('FUN_kernels')
+  func_categorical_preds = import_internal('func_categorical_preds')
+  func_shuffle = import_internal('func_shuffle')
+  class_folds = import_internal('class_folds')
+  regr_folds = import_internal('regr_folds')
+  
+  #------------------------------------ 
 
   if (is.null(Levels)) {                                                          # regression
 
@@ -496,6 +553,13 @@ KernelKnnCV_nmslib = function(data, y, k = 5, folds = 5, h = 1.0, weights_functi
                               dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE, num_threads = 1, seed_num = 1) {
 
   start = Sys.time()
+  
+  #------------------------------------ import internal functions from KernelKnn
+  
+  class_folds = import_internal('class_folds')
+  regr_folds = import_internal('regr_folds')
+  
+  #------------------------------------ 
 
   if (is.null(Levels)) {
 

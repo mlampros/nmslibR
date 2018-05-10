@@ -2,8 +2,17 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
-compiler: gcc
+
+compiler: 
+  - gcc
+  #- clang
+  
 pandoc_version: 1.18
+
+os:
+  - linux
+  #- osx
+
 
 sudo: required
 cache: packages
@@ -20,14 +29,28 @@ env:
     
 before_install:
 
+  #------------------------------------------------- Installation on "Macintosh" gives : "clang: error: unsupported option '-fopenmp'". Therefore first configure clang with OpenMP support.
+  #- brew upgrade python
+  #- sudo pip3 install pip==9.0.3                        # downgrade pip installation to version 9.0.3 due to a temporary issue : https://github.com/pybind/python_example/issues/18#issuecomment-379532037 , https://github.com/pypa/pip/issues/5191 
+  #- sudo pip3 install --upgrade setuptools wheel
+  #- sudo pip3 install -U numpy
+  #- sudo pip3 install --upgrade scipy
+  #- brew install eigen
+  #- brew install gsl
+  #- sudo pip3 install --upgrade pybind11
+  #- sudo pip3 install nmslib
+  #------------------------------------------------- Installation on "Linux"
   - sudo apt-get install r-base-dev
-  - sudo pip install --upgrade pip setuptools
+  - sudo pip install pip==9.0.3                          # downgrade pip installation to version 9.0.3 due to a temporary issue : https://github.com/pybind/python_example/issues/18#issuecomment-379532037 , https://github.com/pypa/pip/issues/5191
+  - sudo pip install --upgrade setuptools
   - sudo pip install -U numpy
   - sudo pip install --upgrade scipy
   - sudo apt-get install libboost-all-dev libgsl0-dev libeigen3-dev
   - sudo apt-get install cmake
+  - sudo pip install --upgrade pybind11
   - sudo pip install nmslib
   - sudo apt-get update
+  #-------------------------------------------------
  
 
 r_packages:
@@ -52,5 +75,3 @@ notifications:
   email:
     on_success: change
     on_failure: change
-    
-    
