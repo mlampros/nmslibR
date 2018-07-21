@@ -11,7 +11,6 @@
 
 The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](https://github.com/searchivarius/nmslib) *python* package. More details on the functionality of the *nmslibR* package can be found in the [blog-post](http://mlampros.github.io/2018/02/27/the_nmslibR_package/) and in the package Documentation.
 
-
 <br>
 
 **Reference:**
@@ -36,11 +35,11 @@ All modules should be installed in the default python configuration (the configu
 
 <br>
 
-The installation notes for *Linux, Macintosh, Windows* are based on *Python 2.7*.
+The installation notes for *Linux, Macintosh, Windows* are based on *Python 3*.
 
 <br>
 
-#### **Debian/Ubuntu** 
+#### **Debian/Ubuntu**
 
 <br>
 
@@ -50,23 +49,27 @@ Installation of the system requirements,
 
 ```R
 
-sudo pip install --upgrade pip setuptools
+sudo apt-get install python3-pip
 
-sudo pip install -U numpy
+sudo pip3 install --upgrade setuptools
 
-sudo pip install --upgrade scipy
+sudo pip3 install -U numpy
+
+sudo pip3 install --upgrade scipy
 
 sudo apt-get install libboost-all-dev libgsl0-dev libeigen3-dev
 
 sudo apt-get install cmake
 
-sudo pip install nmslib
+pip3 install --upgrade pybind11
+
+sudo pip3 install nmslib
 
 ```
 
 <br>
 
-#### **Fedora** 
+#### **Fedora**
 
 <br>
 
@@ -76,13 +79,15 @@ Installation of the system requirements,
 
 ```R
 
-sudo pip install --upgrade pip setuptools
+dnf install python3-pip
 
-sudo pip install -U numpy
+sudo pip3 install --upgrade setuptools
 
-sudo pip install --upgrade scipy
+sudo pip3 install -U numpy
 
-yum install python2-devel
+sudo pip3 install --upgrade scipy
+
+yum install python3-devel
 
 yum install boost-devel
 
@@ -90,48 +95,40 @@ yum install gsl-devel
 
 yum install eigen3-devel
 
+pip3 install --upgrade pybind11
+
+sudo pip3 install nmslib
+
 ```
 
 <br>
 
-#### **Macintosh OSX** 
+#### **Macintosh OSX**
 
 <br>
 
+Upgrade python to version 3 using, 
 
-First do a fresh install of python using brew  [ normally the brew-python will appear as python2, because python comes by default in Macintosh OS ]
-
-<br>
 
 ```R
-brew install python
 
-brew link --overwrite python
+brew upgrade python
+
 ```
-<br>
-
-Then update the *.bash_profile* file in home directory with the following paths
 
 <br>
 
-```R
-export PATH=/usr/local/bin:/usr/bin:$PATH
-
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-```
-<br>
-
-Installation of the system requirements,
+Install the requirements,
 
 <br>
 
 ```R
 
-sudo pip2 install --upgrade pip setuptools
+sudo pip3 install --upgrade pip setuptools wheel
 
-sudo pip2 install -U numpy
+sudo pip3 install -U numpy
 
-sudo pip2 install --upgrade scipy
+sudo pip3 install --upgrade scipy
 
 brew install boost
 
@@ -143,18 +140,21 @@ brew install cmake
 
 brew link --overwrite cmake
 
-sudo pip2 install nmslib
+pip3 install --upgrade pybind11
+
+sudo pip3 install nmslib
+
 ```
 <br>
 
 
-After a successful installation of the system requirements the user should open an R session and give the following *reticulate* command to change to the relevant (brew-python) directory (otherwise the *nmslibR* package won't work properly),
+After a successful installation of the requirements the user should open an R session and give the following *reticulate* command to change to the relevant (brew-python) directory (otherwise the *nmslibR* package won't work properly),
 
 <br>
 
 ```R
 
-reticulate::use_python('/usr/local/bin/python2')
+reticulate::use_python('/usr/local/bin/python3')
 
 
 ```
@@ -195,14 +195,14 @@ Update the Environment variables ( Control Panel >> System and Security >> Syste
 
 ```R
 
-C:\Python27;C:\Python27\Scripts
+C:\Python36;C:\Python36\Scripts
 
 
 ```
 
 <br>
 
-Install the [Visual C++ 2015 Build Tools](http://landinghub.visualstudio.com/visual-cpp-build-tools)
+Install the [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2017)
 
 <br>
 
@@ -212,11 +212,11 @@ Open the Command prompt (console) and install / upgrade the system requirements,
 
 ```R
 
-pip install --upgrade pip setuptools
+pip3 install --upgrade pip setuptools wheel
 
-pip install -U numpy
+pip3 install -U numpy
 
-pip install --upgrade scipy
+pip3 install --upgrade scipy
 
 ```
 
@@ -238,8 +238,9 @@ Then install the *nmslib* library,
 
 ```R
 
-pip install nmslib
+pip3 install --upgrade pybind11
 
+pip3 install nmslib
 
 ```
 

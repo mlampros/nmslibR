@@ -1,4 +1,8 @@
 
+## nmslibR 1.0.3
+
+I updated the README.md file and especially the installation instructions for all mentioned operating systems i.e. Linux, Macintosh, Windows (switch from python2 to python3 due to pybind11 issues).
+
 
 ## nmslibR 1.0.2
 
