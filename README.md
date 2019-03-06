@@ -3,6 +3,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/mlampros/nmslibR.svg?branch=master)](https://travis-ci.org/mlampros/nmslibR)
 [![codecov.io](https://codecov.io/github/mlampros/nmslibR/coverage.svg?branch=master)](https://codecov.io/github/mlampros/nmslibR?branch=master)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/nmslibR?color=blue)](http://www.r-pkg.org/pkg/nmslibR)
+<a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px" ></a>
 
 
 ## nmslibR (Non Metric Space Library in R)
