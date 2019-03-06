@@ -36,7 +36,6 @@ before_install:
   - sudo apt-get install -y cmake -qq
   - sudo pip3 install --upgrade pybind11
   - sudo pip3 install nmslib
-  - sudo apt-get update 
 
 r_packages:
   - Rcpp
