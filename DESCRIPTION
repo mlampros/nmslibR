@@ -1,8 +1,8 @@
 Package: nmslibR
 Type: Package
 Title: Non Metric Space (Approximate) Library
-Version: 1.0.3
-Date: 2018-07-21
+Version: 1.0.4
+Date: 2020-03-07
 Authors@R: c( person("Lampros", "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre")), person("B.", "Naidan", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("L.", "Boytsov", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("Yu.", "Malkov", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("B.", "Frederickson", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("D.", "Novak", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)") )
 Maintainer: Lampros Mouselimis <mouselimislampros@gmail.com>
 BugReports: https://github.com/mlampros/nmslibR/issues
@@ -17,7 +17,7 @@ Depends:
     R(>= 3.2.3)
 Imports: Rcpp (>= 0.12.7), reticulate, R6, Matrix, KernelKnn, utils
 LinkingTo: Rcpp, RcppArmadillo (>= 0.8.0)
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Suggests:
     testthat,
     covr,

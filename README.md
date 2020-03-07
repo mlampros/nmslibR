@@ -3,6 +3,8 @@
 [![Travis-CI Build Status](https://travis-ci.org/mlampros/nmslibR.svg?branch=master)](https://travis-ci.org/mlampros/nmslibR)
 [![codecov.io](https://codecov.io/github/mlampros/nmslibR/coverage.svg?branch=master)](https://codecov.io/github/mlampros/nmslibR?branch=master)
 [![Downloads](http://cranlogs.r-pkg.org/badges/grand-total/nmslibR?color=blue)](http://www.r-pkg.org/pkg/nmslibR)
+<a href="https://www.buymeacoffee.com/VY0x8snyh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="21px" ></a>
+[![Dependencies](https://tinyverse.netlify.com/badge/nmslibR)](https://cran.r-project.org/package=nmslibR)
 
 
 ## nmslibR (Non Metric Space Library in R)
@@ -264,12 +266,12 @@ install.packages('nmslibR')
 ```
 <br>
 
-and to download the latest version from Github use the *install_github* function of the devtools package,
+and to download the latest version from Github use the *install_github* function of the *remotes* package,
 <br><br>
 
 ```R
 
-devtools::install_github(repo = 'mlampros/nmslibR')
+remotes::install_github(repo = 'mlampros/nmslibR')
 
 ```
 <br>

@@ -4,12 +4,26 @@
 \alias{KernelKnnCV_nmslib}
 \title{Approximate Kernel k nearest neighbors (cross-validated) using the nmslib library}
 \usage{
-KernelKnnCV_nmslib(data, y, k = 5, folds = 5, h = 1,
-  weights_function = NULL, Levels = NULL, Index_Params = NULL,
-  Time_Params = NULL, space = "l1", space_params = NULL,
-  method = "hnsw", data_type = "DENSE_VECTOR", dtype = "FLOAT",
-  index_filepath = NULL, print_progress = FALSE, num_threads = 1,
-  seed_num = 1)
+KernelKnnCV_nmslib(
+  data,
+  y,
+  k = 5,
+  folds = 5,
+  h = 1,
+  weights_function = NULL,
+  Levels = NULL,
+  Index_Params = NULL,
+  Time_Params = NULL,
+  space = "l1",
+  space_params = NULL,
+  method = "hnsw",
+  data_type = "DENSE_VECTOR",
+  dtype = "FLOAT",
+  index_filepath = NULL,
+  print_progress = FALSE,
+  num_threads = 1,
+  seed_num = 1
+)
 }
 \arguments{
 \item{data}{a numeric matrix}

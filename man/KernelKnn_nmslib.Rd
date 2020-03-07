@@ -4,11 +4,25 @@
 \alias{KernelKnn_nmslib}
 \title{Approximate Kernel k nearest neighbors using the nmslib library}
 \usage{
-KernelKnn_nmslib(data, TEST_data = NULL, y, k = 5, h = 1,
-  weights_function = NULL, Levels = NULL, Index_Params = NULL,
-  Time_Params = NULL, space = "l1", space_params = NULL,
-  method = "hnsw", data_type = "DENSE_VECTOR", dtype = "FLOAT",
-  index_filepath = NULL, print_progress = FALSE, num_threads = 1)
+KernelKnn_nmslib(
+  data,
+  TEST_data = NULL,
+  y,
+  k = 5,
+  h = 1,
+  weights_function = NULL,
+  Levels = NULL,
+  Index_Params = NULL,
+  Time_Params = NULL,
+  space = "l1",
+  space_params = NULL,
+  method = "hnsw",
+  data_type = "DENSE_VECTOR",
+  dtype = "FLOAT",
+  index_filepath = NULL,
+  print_progress = FALSE,
+  num_threads = 1
+)
 }
 \arguments{
 \item{data}{either a matrix or a scipy sparse matrix}

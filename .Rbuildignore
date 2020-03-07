@@ -1,2 +1,4 @@
 ^\.travis\.yml$
 ^codecov\.yml$
+^.git$
+^.github$

@@ -4,45 +4,15 @@
 \name{NMSlib}
 \alias{NMSlib}
 \title{Non metric space library}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 # init <- NMSlib$new(input_data, Index_Params = NULL, Time_Params = NULL,
 #                           space='l1', space_params = NULL, method = 'hnsw',
 #                           data_type = 'DENSE_VECTOR', dtype = 'FLOAT',
 #                           index_filepath = NULL, print_progress = FALSE)
 }
-\arguments{
-\item{input_data}{the input data. See \emph{details} for more information}
-
-\item{query_data_row}{a vector to query for}
-
-\item{query_data}{the query_data parameter should be of the same type with the \emph{input_data} parameter. Queries to query for}
-
-\item{k}{an integer. The number of neighbours to return}
-
-\item{Index_Params}{a list of (optional) parameters to use in indexing (when creating the index)}
-
-\item{Time_Params}{a list of parameters to use in querying. Setting \emph{Time_Params} to NULL will reset}
-
-\item{space}{a character string (optional). The metric space to create for this index. Page 31 of the manual (see \emph{references}) explains all available inputs}
-
-\item{space_params}{a list of (optional) parameters for configuring the space. See the \emph{references} manual for more details.}
-
-\item{method}{a character string specifying the index method to use}
-
-\item{data_type}{a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'}
-
-\item{dtype}{a character string. One of 'DOUBLE', 'FLOAT', 'INT'}
-
-\item{print_progress}{a boolean (either TRUE or FALSE). Whether or not to display progress bar}
-
-\item{num_threads}{an integer. The number of threads to use}
-
-\item{index_filepath}{a character string specifying the path to a file, where an existing index is saved}
-
-\item{filename}{a character string specifying the path. The filename to save ( in case of the \emph{save_Index} method ) or the filename to load ( in case of the \emph{load_Index} method )}
-}
 \description{
+Non metric space library
+
 Non metric space library
 }
 \details{
@@ -106,4 +76,125 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 \references{
 \emph{https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf}
 }
-\keyword{datasets}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{NMSlib$new()}}
+\item \href{#method-Knn_Query}{\code{NMSlib$Knn_Query()}}
+\item \href{#method-knn_Query_Batch}{\code{NMSlib$knn_Query_Batch()}}
+\item \href{#method-save_Index}{\code{NMSlib$save_Index()}}
+\item \href{#method-clone}{\code{NMSlib$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$new(
+  input_data,
+  Index_Params = NULL,
+  Time_Params = NULL,
+  space = "l1",
+  space_params = NULL,
+  method = "hnsw",
+  data_type = "DENSE_VECTOR",
+  dtype = "FLOAT",
+  index_filepath = NULL,
+  print_progress = FALSE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{input_data}}{the input data. See \emph{details} for more information}
+
+\item{\code{Index_Params}}{a list of (optional) parameters to use in indexing (when creating the index)}
+
+\item{\code{Time_Params}}{a list of parameters to use in querying. Setting \emph{Time_Params} to NULL will reset}
+
+\item{\code{space}}{a character string (optional). The metric space to create for this index. Page 31 of the manual (see \emph{references}) explains all available inputs}
+
+\item{\code{space_params}}{a list of (optional) parameters for configuring the space. See the \emph{references} manual for more details.}
+
+\item{\code{method}}{a character string specifying the index method to use}
+
+\item{\code{data_type}}{a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'}
+
+\item{\code{dtype}}{a character string. One of 'DOUBLE', 'FLOAT', 'INT'}
+
+\item{\code{index_filepath}}{a character string specifying the path to a file, where an existing index is saved}
+
+\item{\code{print_progress}}{a boolean (either TRUE or FALSE). Whether or not to display progress bar}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Knn_Query"></a>}}
+\subsection{Method \code{Knn_Query()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$Knn_Query(query_data_row, k = 5)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{query_data_row}}{a vector to query for}
+
+\item{\code{k}}{an integer. The number of neighbours to return}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-knn_Query_Batch"></a>}}
+\subsection{Method \code{knn_Query_Batch()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$knn_Query_Batch(query_data, k = 5, num_threads = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{query_data}}{the query_data parameter should be of the same type with the \emph{input_data} parameter. Queries to query for}
+
+\item{\code{k}}{an integer. The number of neighbours to return}
+
+\item{\code{num_threads}}{an integer. The number of threads to use}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-save_Index"></a>}}
+\subsection{Method \code{save_Index()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$save_Index(filename)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{filename}}{a character string specifying the path. The filename to save ( in case of the \emph{save_Index} method ) or the filename to load ( in case of the \emph{load_Index} method )}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

@@ -1,4 +1,9 @@
 
+## nmslibR 1.0.4
+
+I adjusted the output indices of the *Knn_Query* method (*NMSlib* R6 class) to account for the difference in indexing between R and Python ( *reference* : https://github.com/mlampros/nmslibR/issues/5 )
+
+
 ## nmslibR 1.0.3
 
 I updated the README.md file and especially the installation instructions for all mentioned operating systems i.e. Linux, Macintosh, Windows (switch from python2 to python3 due to pybind11 issues).
