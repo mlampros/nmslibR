@@ -11,7 +11,7 @@ vignette: >
 
 
 
-The **nmslibR** package is a wrapper of [*NMSLIB*](https://github.com/searchivarius/nmslib), which according to the authors "... is a similarity search library and a toolkit for evaluation of similarity search methods. The goal of the project is to create an effective and comprehensive toolkit for searching in generic non-metric spaces. Being comprehensive is important, because no single method is likely to be sufficient in all cases. Also note that exact solutions are hardly efficient in high dimensions and/or non-metric spaces. Hence, the main focus is on approximate methods".
+The **nmslibR** package is a wrapper of [*NMSLIB*](https://github.com/nmslib/nmslib), which according to the authors "... is a similarity search library and a toolkit for evaluation of similarity search methods. The goal of the project is to create an effective and comprehensive toolkit for searching in generic non-metric spaces. Being comprehensive is important, because no single method is likely to be sufficient in all cases. Also note that exact solutions are hardly efficient in high dimensions and/or non-metric spaces. Hence, the main focus is on approximate methods".
 
 I've searched for some time (before wrapping NMSLIB) for a nearest neighbor library which can work with high dimensional data and can scale with big datasets. I've already written a package for k-nearest-neighbor search ([KernelKnn](https://CRAN.R-project.org/package=KernelKnn)), however, it's based on brute force and unfortunately, it requires a certain computation time if the data consists of many rows. The *nmslibR* package, besides the main functionality of the NMSLIB python library, also includes an Approximate Kernel k-nearest function, which as I will show in the next lines is both fast and accurate. A comparison of NMSLIB with other popular approximate k-nearest-neighbor methods can be found [here](https://github.com/erikbern/ann-benchmarks).
 
@@ -28,7 +28,7 @@ The NMSLIB Library,
 
 <br>
 
-Details can be found in the [NMSLIB-manual](https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf).
+Details can be found in the [NMSLIB-manual](https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf).
 
 
 <br>
@@ -180,7 +180,7 @@ print(res_dgr$shape)
 
 <br>
 
-The parameter settings for the *NMSlib* R6-class can be found in the [Non-Metric Space Library (NMSLIB) Manual](https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf), which explains the NMSLIB Library in detail. In the following code chunk, I'll show the functionality of the methods included using a [data set from my Github repository](https://github.com/mlampros/DataSets) (it appears as [.ipynb notebook in the nmslib Github repository](https://github.com/searchivarius/nmslib/blob/master/python_bindings/notebooks/search_sift_uint8.ipynb))
+The parameter settings for the *NMSlib* R6-class can be found in the [Non-Metric Space Library (NMSLIB) Manual](https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf), which explains the NMSLIB Library in detail. In the following code chunk, I'll show the functionality of the methods included using a [data set from my Github repository](https://github.com/mlampros/DataSets) (it appears as [.ipynb notebook in the nmslib Github repository](https://github.com/nmslib/nmslib/blob/master/python_bindings/notebooks/search_sift_uint8.ipynb))
 
 <br>
 
@@ -300,7 +300,7 @@ List of 2
 
 <br> 
 
-Details on the various methods and parameter settings can be found in the [manual of the NMSLIB python Library](https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf). 
+Details on the various methods and parameter settings can be found in the [manual of the NMSLIB python Library](https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf). 
 
 
 <br>

@@ -1,7 +1,9 @@
 
 ## nmslibR 1.0.4
 
-I adjusted the output indices of the *Knn_Query* method (*NMSlib* R6 class) to account for the difference in indexing between R and Python ( *reference* : https://github.com/mlampros/nmslibR/issues/5 )
+* I adjusted the output indices of the *Knn_Query* method (*NMSlib* R6 class) to account for the difference in indexing between R and Python ( *reference* : https://github.com/mlampros/nmslibR/issues/5 )
+* I removed the *dtype* 'DOUBLE' parameter from the *NMSlib* R6 class, *KernelKnn_nmslib* and  *KernelKnnCV_nmslib* functions (*reference* : https://github.com/nmslib/nmslib/commit/4d2937d6259aebb456db141ee0f3c2c465a51a8e )
+* I replaced almost all web-links of the Python *nmslib* Package because the initial repository was moved to https://github.com/nmslib/nmslib
 
 
 ## nmslibR 1.0.3

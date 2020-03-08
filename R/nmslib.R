@@ -134,7 +134,7 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' @param space_params a list of (optional) parameters for configuring the space. See the \emph{references} manual for more details.
 #' @param method a character string specifying the index method to use
 #' @param data_type a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'
-#' @param dtype a character string. One of 'DOUBLE', 'FLOAT', 'INT'
+#' @param dtype a character string. Either 'FLOAT' or 'INT'
 #' @param print_progress a boolean (either TRUE or FALSE). Whether or not to display progress bar
 #' @param num_threads an integer. The number of threads to use
 #' @param index_filepath a character string specifying the path to a file, where an existing index is saved
@@ -152,7 +152,7 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #'
 #' If the \emph{index_filepath} parameter is not NULL then an existing index will be loaded
 #'
-#' @references \emph{https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf}
+#' @references \emph{https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf}
 #' @docType class
 #' @importFrom R6 R6Class
 #' @import reticulate
@@ -454,7 +454,7 @@ inner_kernel_function = function(y_matrix, dist_matrix, Levels, weights_function
 #' @param space_params a list of (optional) parameters for configuring the space. See the \emph{references} manual for more details.
 #' @param method a character string specifying the index method to use
 #' @param data_type a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'
-#' @param dtype a character string. One of 'DOUBLE', 'FLOAT', 'INT'
+#' @param dtype a character string. Either 'FLOAT' or 'INT'
 #' @param print_progress a boolean (either TRUE or FALSE). Whether or not to display progress bar
 #' @param num_threads an integer. The number of threads to use
 #' @param index_filepath a character string specifying the path to a file, where an existing index is saved
@@ -531,7 +531,7 @@ KernelKnn_nmslib = function(data, TEST_data = NULL, y, k = 5, h = 1.0, weights_f
 #' @param space_params a list of (optional) parameters for configuring the space. See the \emph{references} manual for more details.
 #' @param method a character string specifying the index method to use
 #' @param data_type a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'
-#' @param dtype a character string. One of 'DOUBLE', 'FLOAT', 'INT'
+#' @param dtype a character string. Either 'FLOAT' or 'INT'
 #' @param print_progress a boolean (either TRUE or FALSE). Whether or not to display progress bar
 #' @param num_threads an integer. The number of threads to use
 #' @param index_filepath a character string specifying the path to a file, where an existing index is saved

@@ -74,7 +74,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 }
 }
 \references{
-\emph{https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf}
+\emph{https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -121,7 +121,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 
 \item{\code{data_type}}{a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'}
 
-\item{\code{dtype}}{a character string. One of 'DOUBLE', 'FLOAT', 'INT'}
+\item{\code{dtype}}{a character string. Either 'FLOAT' or 'INT'}
 
 \item{\code{index_filepath}}{a character string specifying the path to a file, where an existing index is saved}
 

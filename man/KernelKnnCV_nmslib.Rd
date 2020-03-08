@@ -52,7 +52,7 @@ KernelKnnCV_nmslib(
 
 \item{data_type}{a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'}
 
-\item{dtype}{a character string. One of 'DOUBLE', 'FLOAT', 'INT'}
+\item{dtype}{a character string. Either 'FLOAT' or 'INT'}
 
 \item{index_filepath}{a character string specifying the path to a file, where an existing index is saved}
 

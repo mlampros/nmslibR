@@ -11,7 +11,7 @@
 <br>
 
 
-The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](https://github.com/searchivarius/nmslib) *python* package. More details on the functionality of the *nmslibR* package can be found in the [blog-post](http://mlampros.github.io/2018/02/27/the_nmslibR_package/) and in the package Documentation.
+The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](https://github.com/nmslib/nmslib) *python* package. More details on the functionality of the *nmslibR* package can be found in the [blog-post](http://mlampros.github.io/2018/02/27/the_nmslibR_package/) and in the package Documentation.
 
 <br>
 
@@ -21,9 +21,9 @@ The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](
 
 **Reference:**
 
-https://github.com/searchivarius/nmslib
+https://github.com/nmslib/nmslib
 
-https://github.com/searchivarius/nmslib/blob/master/manual/manual.pdf
+https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf
 
 
 <br>

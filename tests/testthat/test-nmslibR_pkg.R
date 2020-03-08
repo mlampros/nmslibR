@@ -191,7 +191,7 @@ testthat::test_that("the NMSlib class works with default settings [ and 'input_d
 
   init_nms = NMSlib$new(input_data = x_lst, Index_Params = NULL, Time_Params = NULL, space='l1', space_params = NULL,
 
-                        method = 'hnsw', data_type = 'DENSE_VECTOR', dtype = 'DOUBLE', index_filepath = NULL, print_progress = FALSE)
+                        method = 'hnsw', data_type = 'DENSE_VECTOR', dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE)
 
   knns = 5
 
@@ -209,7 +209,7 @@ testthat::test_that("the NMSlib class works with default settings [ and 'Time_Pa
 
   init_nms = NMSlib$new(input_data = x, Index_Params = NULL, Time_Params = TIME_PARAMS, space='l1', space_params = NULL,
 
-                        method = 'hnsw', data_type = 'DENSE_VECTOR', dtype = 'DOUBLE', index_filepath = NULL, print_progress = FALSE)
+                        method = 'hnsw', data_type = 'DENSE_VECTOR', dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE)
 
   knns = 5
 
