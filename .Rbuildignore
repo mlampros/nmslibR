@@ -1,4 +1,6 @@
-^\.travis\.yml$
 ^codecov\.yml$
 ^.git$
 ^.github$
+^\.ccache$
+^\.github$
+^tic\.R$
