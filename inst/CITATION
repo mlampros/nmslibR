@@ -1,0 +1,47 @@
+citHeader("Please cite both the package and the original articles / software in your publications:")
+
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(
+  bibtype = "Manual",
+  title   = "{nmslibR}: Non Metric Space (Approximate) Library",
+  author  = person("Lampros", "Mouselimis"),
+  year    = year,
+  note    = note,
+  url     = "https://CRAN.R-project.org/package=nmslibR"
+)
+
+bibentry(
+  bibtype = "Manual",
+  title   = "{nmslib}: Non-Metric Space Library (NMSLIB)",
+  author  = c(person("B", "Naidan"), person("L", "Boytsov"), person("Yu", "Malkov"), person("B", "Frederickson"), person("D", "Novak")),
+  year    = "2014",
+  url     = "https://github.com/nmslib/nmslib"
+)
+
+bibentry(
+  bibtype   = "InProceedings",
+  author    = c(person("Leonid", "Boytsov"), person("Bilegsaikhan", "Naidan")),
+  editor    = c(person("Nieves", "Brisaboa"), person("Oscar", "Pedreira"), person("Pavel", "Zezula")),
+  title     = "Engineering Efficient and Effective Non-metric Space Library",
+  booktitle = "Similarity Search and Applications - 6th International Conference, SISAP 2013, Spain, October 2-4, 2013, Proceedings",
+  series    = "Lecture Notes in Computer Science",
+  volume    = "8199",
+  pages     = "280--293",
+  publisher = "Springer",
+  year      = "2013",
+  url       = "https://doi.org/10.1007/978-3-642-41062-8",
+  doi       = "10.1007/978-3-642-41062-8"
+)
+
+bibentry(
+  bibtype   = "Article",
+  author    = c(person("Yury", "Malkov"), person("D", "Yashunin")),
+  title     = "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs",
+  journal   = "CoRR",
+  volume    = "abs/1603.09320",
+  year      = "2016",
+  url       = "https://arxiv.org/abs/1603.09320"
+)
+

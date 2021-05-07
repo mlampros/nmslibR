@@ -8,16 +8,16 @@ NMSLIB <- NULL; SCP <- NULL;
 
 .onLoad <- function(libname, pkgname) {
 
-  if (reticulate::py_available(initialize = TRUE)) {
+  try({
+    if (reticulate::py_available(initialize = FALSE)) {
 
-    if (reticulate::py_module_available("nmslib")) {
+      try({
+        NMSLIB <<- reticulate::import("nmslib", delay_load = TRUE)
+      }, silent=TRUE)
 
-      NMSLIB <<- reticulate::import("nmslib", delay_load = TRUE)
+      try({
+        SCP <<- reticulate::import("scipy", delay_load = TRUE, convert = FALSE)
+      }, silent=TRUE)
     }
-
-    if (reticulate::py_module_available("scipy")) {
-
-      SCP <<- reticulate::import("scipy", delay_load = TRUE, convert = FALSE)
-    }
-  }
+  }, silent=TRUE)
 }

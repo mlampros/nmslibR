@@ -67,14 +67,18 @@ There are three possible ways to specify the \emph{weights function}, 1st option
 }
 \examples{
 
-if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
+try({
+  if (reticulate::py_available(initialize = FALSE)) {
+    if (reticulate::py_module_available("nmslib")) {
 
-  library(nmslibR)
+      library(nmslibR)
 
-  x = matrix(runif(1000), nrow = 100, ncol = 10)
+      x = matrix(runif(1000), nrow = 100, ncol = 10)
 
-  y = runif(100)
+      y = runif(100)
 
-  out = KernelKnn_nmslib(data = x, y = y, k = 5)
-}
+      out = KernelKnn_nmslib(data = x, y = y, k = 5)
+    }
+  }
+}, silent=TRUE)
 }

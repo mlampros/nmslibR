@@ -1,5 +1,3 @@
-#' @useDynLib ClusterR, .registration = TRUE
+#' @useDynLib nmslibR, .registration = TRUE
 #' @importFrom Rcpp evalCpp
-#' @import gtools
-#' @importFrom utils globalVariables
 NULL

@@ -11,20 +11,25 @@
 #' @references https://docs.scipy.org/doc/scipy/reference/sparse.html
 #' @examples
 #'
-#' if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
+#' try({
+#'   if (reticulate::py_available(initialize = FALSE)) {
+#'     if (reticulate::py_module_available("scipy")) {
 #'
-#'   library(nmslibR)
+#'       library(nmslibR)
 #'
-#'   set.seed(1)
+#'       set.seed(1)
 #'
-#'   x = matrix(runif(1000), nrow = 100, ncol = 10)
+#'       x = matrix(runif(1000), nrow = 100, ncol = 10)
 #'
-#'   res = mat_2scipy_sparse(x)
+#'       res = mat_2scipy_sparse(x)
 #'
-#'   print(dim(x))
+#'       print(dim(x))
 #'
-#'   print(res$shape)
-#' }
+#'       print(res$shape)
+#'     }
+#'   }
+#' }, silent=TRUE)
+
 
 mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 
@@ -61,43 +66,48 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 #' @references https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgCMatrix-class.html, https://stat.ethz.ch/R-manual/R-devel/library/Matrix/html/dgRMatrix-class.html, https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix
 #' @examples
 #'
-#' if (reticulate::py_available() && reticulate::py_module_available("scipy")) {
+#' try({
+#'   if (reticulate::py_available(initialize = FALSE)) {
+#'     if (reticulate::py_module_available("scipy")) {
 #'
-#'   if (Sys.info()["sysname"] != 'Darwin') {
+#'       if (Sys.info()["sysname"] != 'Darwin') {
 #'
-#'     library(nmslibR)
-#'
-#'
-#'     # 'dgCMatrix' sparse matrix
-#'     #--------------------------
-#'
-#'     data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
-#'
-#'     dgcM = Matrix::Matrix(data = data, nrow = 3,
-#'
-#'                           ncol = 3, byrow = TRUE,
-#'
-#'                           sparse = TRUE)
-#'
-#'     print(dim(dgcM))
-#'
-#'     res = TO_scipy_sparse(dgcM)
-#'
-#'     print(res$shape)
+#'         library(nmslibR)
 #'
 #'
-#'     # 'dgRMatrix' sparse matrix
-#'     #--------------------------
+#'         # 'dgCMatrix' sparse matrix
+#'         #--------------------------
 #'
-#'     dgrM = as(dgcM, "RsparseMatrix")
+#'         data = c(1, 0, 2, 0, 0, 3, 4, 5, 6)
 #'
-#'     print(dim(dgrM))
+#'         dgcM = Matrix::Matrix(data = data, nrow = 3,
 #'
-#'     res_dgr = TO_scipy_sparse(dgrM)
+#'                               ncol = 3, byrow = TRUE,
 #'
-#'     print(res_dgr$shape)
+#'                               sparse = TRUE)
+#'
+#'         print(dim(dgcM))
+#'
+#'         res = TO_scipy_sparse(dgcM)
+#'
+#'         print(res$shape)
+#'
+#'
+#'         # 'dgRMatrix' sparse matrix
+#'         #--------------------------
+#'
+#'         dgrM = as(dgcM, "RsparseMatrix")
+#'
+#'         print(dim(dgrM))
+#'
+#'         res_dgr = TO_scipy_sparse(dgrM)
+#'
+#'         print(res_dgr$shape)
+#'       }
+#'     }
 #'   }
-#' }
+#' }, silent=TRUE)
+
 
 TO_scipy_sparse = function(R_sparse_matrix) {
 
@@ -182,28 +192,31 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' #                           index_filepath = NULL, print_progress = FALSE)
 #' @examples
 #'
-#' if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
+#' try({
+#'   if (reticulate::py_available(initialize = FALSE)) {
+#'     if (reticulate::py_module_available("nmslib")) {
 #'
-#'   library(nmslibR)
+#'       library(nmslibR)
 #'
-#'   set.seed(1)
-#'   x = matrix(runif(1000), nrow = 100, ncol = 10)
+#'       set.seed(1)
+#'       x = matrix(runif(1000), nrow = 100, ncol = 10)
 #'
-#'   init_nms = NMSlib$new(input_data = x)
-#'
-#'
-#'   # returns a 1-dimensional vector (index, distance)
-#'   #--------------------------------------------------
-#'
-#'   init_nms$Knn_Query(query_data_row = x[1, ], k = 5)
+#'       init_nms = NMSlib$new(input_data = x)
 #'
 #'
-#'   # returns knn's for all data
-#'   #---------------------------
+#'       # returns a 1-dimensional vector (index, distance)
+#'       #--------------------------------------------------
 #'
-#'   all_dat = init_nms$knn_Query_Batch(x, k = 5, num_threads = 1)
+#'       init_nms$Knn_Query(query_data_row = x[1, ], k = 5)
 #'
-#' }
+#'
+#'       # returns knn's for all data
+#'       #---------------------------
+#'
+#'       all_dat = init_nms$knn_Query_Batch(x, k = 5, num_threads = 1)
+#'     }
+#'   }
+#' }, silent=TRUE)
 
 
 NMSlib <- R6::R6Class("NMSlib",
@@ -348,6 +361,7 @@ NMSlib <- R6::R6Class("NMSlib",
 #' import internal functions from the KernelKnn package
 #'
 #' @importFrom utils getFromNamespace
+#' @import KernelKnn
 #' @keywords internal
 
 import_internal = function(function_name) {
@@ -463,16 +477,20 @@ inner_kernel_function = function(y_matrix, dist_matrix, Levels, weights_function
 #' @export
 #' @examples
 #'
-#' if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
+#' try({
+#'   if (reticulate::py_available(initialize = FALSE)) {
+#'     if (reticulate::py_module_available("nmslib")) {
 #'
-#'   library(nmslibR)
+#'       library(nmslibR)
 #'
-#'   x = matrix(runif(1000), nrow = 100, ncol = 10)
+#'       x = matrix(runif(1000), nrow = 100, ncol = 10)
 #'
-#'   y = runif(100)
+#'       y = runif(100)
 #'
-#'   out = KernelKnn_nmslib(data = x, y = y, k = 5)
-#' }
+#'       out = KernelKnn_nmslib(data = x, y = y, k = 5)
+#'     }
+#'   }
+#' }, silent=TRUE)
 
 
 KernelKnn_nmslib = function(data, TEST_data = NULL, y, k = 5, h = 1.0, weights_function = NULL, Levels = NULL, Index_Params = NULL,
@@ -544,11 +562,13 @@ KernelKnn_nmslib = function(data, TEST_data = NULL, y, k = 5, h = 1.0, weights_f
 #' @examples
 #'
 #' \dontrun{
+#'
 #' x = matrix(runif(1000), nrow = 100, ncol = 10)
 #'
 #' y = runif(100)
 #'
 #' out = KernelKnnCV_nmslib(x, y, k = 5, folds = 5)
+#'
 #' }
 
 
@@ -593,7 +613,6 @@ KernelKnnCV_nmslib = function(data, y, k = 5, folds = 5, h = 1.0, weights_functi
                                     weights_function, Levels, Index_Params, Time_Params, space, space_params, method, data_type,
 
                                     dtype, index_filepath, print_progress, num_threads)
-
     setTxtProgressBar(pb, i)
   }
 

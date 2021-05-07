@@ -71,10 +71,12 @@ There are three possible ways to specify the \emph{weights function}, 1st option
 \examples{
 
 \dontrun{
+
 x = matrix(runif(1000), nrow = 100, ncol = 10)
 
 y = runif(100)
 
 out = KernelKnnCV_nmslib(x, y, k = 5, folds = 5)
+
 }
 }

@@ -50,28 +50,31 @@ If the \emph{index_filepath} parameter is not NULL then an existing index will b
 
 \examples{
 
-if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
+try({
+  if (reticulate::py_available(initialize = FALSE)) {
+    if (reticulate::py_module_available("nmslib")) {
 
-  library(nmslibR)
+      library(nmslibR)
 
-  set.seed(1)
-  x = matrix(runif(1000), nrow = 100, ncol = 10)
+      set.seed(1)
+      x = matrix(runif(1000), nrow = 100, ncol = 10)
 
-  init_nms = NMSlib$new(input_data = x)
-
-
-  # returns a 1-dimensional vector (index, distance)
-  #--------------------------------------------------
-
-  init_nms$Knn_Query(query_data_row = x[1, ], k = 5)
+      init_nms = NMSlib$new(input_data = x)
 
 
-  # returns knn's for all data
-  #---------------------------
+      # returns a 1-dimensional vector (index, distance)
+      #--------------------------------------------------
 
-  all_dat = init_nms$knn_Query_Batch(x, k = 5, num_threads = 1)
+      init_nms$Knn_Query(query_data_row = x[1, ], k = 5)
 
-}
+
+      # returns knn's for all data
+      #---------------------------
+
+      all_dat = init_nms$knn_Query_Batch(x, k = 5, num_threads = 1)
+    }
+  }
+}, silent=TRUE)
 }
 \references{
 \emph{https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf}
@@ -88,6 +91,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NMSlib$new(
@@ -132,6 +136,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Knn_Query"></a>}}
+\if{latex}{\out{\hypertarget{method-Knn_Query}{}}}
 \subsection{Method \code{Knn_Query()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NMSlib$Knn_Query(query_data_row, k = 5)}\if{html}{\out{</div>}}
@@ -149,6 +154,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-knn_Query_Batch"></a>}}
+\if{latex}{\out{\hypertarget{method-knn_Query_Batch}{}}}
 \subsection{Method \code{knn_Query_Batch()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NMSlib$knn_Query_Batch(query_data, k = 5, num_threads = 1)}\if{html}{\out{</div>}}
@@ -168,6 +174,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-save_Index"></a>}}
+\if{latex}{\out{\hypertarget{method-save_Index}{}}}
 \subsection{Method \code{save_Index()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{NMSlib$save_Index(filename)}\if{html}{\out{</div>}}
@@ -183,6 +190,7 @@ if (reticulate::py_available() && reticulate::py_module_available("nmslib")) {
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

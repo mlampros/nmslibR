@@ -1,4 +1,12 @@
 
+## nmslibR 1.0.5
+
+* I updated the *License* in the DESCRIPTION file which as of '07-05-2021' will be *Apache License Version 2.0*. Therefore I removed also the COPYRIGHTS file from the 'inst' directory
+* I removed *LazyData* from the DESCRIPTION file
+* I added the *CITATION* file in the 'inst' directory
+* I removed the 'zzz.R' file and the 'packageStartupMessage()'
+
+
 ## nmslibR 1.0.4
 
 * I adjusted the output indices of the *Knn_Query* method (*NMSlib* R6 class) to account for the difference in indexing between R and Python ( *reference* : https://github.com/mlampros/nmslibR/issues/5 )
