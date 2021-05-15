@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Non Metric Space (Approximate) Library">
-<meta property="og:description" content='A Non-Metric Space Library (NMSLIB &lt;https://github.com/nmslib/nmslib&gt;) wrapper, which according to the authors "is an efficient cross-platform similarity search library and a toolkit for evaluation of similarity search methods. The goal of the NMSLIB &lt;https://github.com/searchivarius/nmslib&gt; Library is to create an effective and comprehensive toolkit for searching in generic non-metric spaces. Being comprehensive is important, because no single method is likely to be sufficient in all cases. Also note that exact solutions are hardly efficient in high dimensions and/or non-metric spaces. Hence, the main focus is on approximate methods". The wrapper also includes Approximate Kernel k-Nearest-Neighbor functions based on the NMSLIB &lt;https://github.com/searchivarius/nmslib&gt; Python Library.'>
+<meta property="og:description" content='A Non-Metric Space Library (NMSLIB &lt;https://github.com/nmslib/nmslib&gt;) wrapper, which according to the authors "is an efficient cross-platform similarity search library and a toolkit for evaluation of similarity search methods. The goal of the NMSLIB &lt;https://github.com/nmslib/nmslib&gt; Library is to create an effective and comprehensive toolkit for searching in generic non-metric spaces. Being comprehensive is important, because no single method is likely to be sufficient in all cases. Also note that exact solutions are hardly efficient in high dimensions and/or non-metric spaces. Hence, the main focus is on approximate methods". The wrapper also includes Approximate Kernel k-Nearest-Neighbor functions based on the NMSLIB &lt;https://github.com/nmslib/nmslib&gt; Python Library.'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">nmslibR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -268,6 +268,21 @@
 <p><a href="https://github.com/mlampros/nmslibR/issues">https://github.com/mlampros/nmslibR/issues</a></p>
 <p><br></p>
 </div>
+<div id="citation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#citation" class="anchor"></a><strong>Citation:</strong>
+</h3>
+<p>If you use the code of this repository in your paper or research please cite both <strong>nmslibR</strong> and the <strong>original articles / software</strong> <a href="https://cran.r-project.org/web/packages/nmslibR/citation.html">https://cran.r-project.org/web/packages/nmslibR/citation.html</a>:</p>
+<p><br></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="op">@</span>Manual{,</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  title =<span class="st"> </span>{{nmslibR}<span class="op">:</span><span class="st"> </span>Non Metric <span class="kw">Space</span> (Approximate) Library},</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  author =<span class="st"> </span>{Lampros Mouselimis},</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  year =<span class="st"> </span>{<span class="dv">2021</span>},</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  note =<span class="st"> </span>{R package version <span class="dv">1</span>.<span class="fl">0.5</span>},</span>
+<span id="cb12-6"><a href="#cb12-6"></a>  url =<span class="st"> </span>{https<span class="op">:</span><span class="er">//</span>CRAN.R<span class="op">-</span>project.org<span class="op">/</span>package=nmslibR},</span>
+<span id="cb12-7"><a href="#cb12-7"></a>}</span></code></pre></div>
+<p><br></p>
+</div>
 </div>
 
   </div>
@@ -287,13 +302,20 @@
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small>Apache License (&gt;= 2)</small></li>
+</ul>
+</div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing nmslibR</a></li>
 </ul>
 </div>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Lampros Mouselimis <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Lampros Mouselimis <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/https://orcid.org/0000-0002-8024-1546" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
