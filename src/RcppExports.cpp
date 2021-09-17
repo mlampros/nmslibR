@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // nmslib_idx_dist
 Rcpp::List nmslib_idx_dist(std::vector<std::vector<std::vector<double> > >& input_list, unsigned int k, int threads);
 RcppExport SEXP _nmslibR_nmslib_idx_dist(SEXP input_listSEXP, SEXP kSEXP, SEXP threadsSEXP) {

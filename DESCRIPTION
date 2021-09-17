@@ -1,8 +1,8 @@
 Package: nmslibR
 Type: Package
 Title: Non Metric Space (Approximate) Library
-Version: 1.0.5
-Date: 2021-09-11
+Version: 1.0.6
+Date: 2021-09-17
 Authors@R: c( person("Lampros", "Mouselimis", email = "mouselimislampros@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "https://orcid.org/0000-0002-8024-1546")), person("B.", "Naidan", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("L.", "Boytsov", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("Yu.", "Malkov", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("B.", "Frederickson", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)"), person("D.", "Novak", role = "cph", comment = "Author of the Non-Metric Space Library (NMSLIB)") )
 BugReports: https://github.com/mlampros/nmslibR/issues
 URL: https://github.com/mlampros/nmslibR

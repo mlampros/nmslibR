@@ -1,4 +1,10 @@
 
+## nmslibR 1.0.6
+
+* I've added a 'packageStartupMessage' informing the user in case of the error 'attempt to apply non-function' that he/she has to use the 'reticulate::py_config()' before loading the package (in a new R session)
+* I've updated the 'SystemRequirements' in the DESCRIPTION file
+
+
 ## nmslibR 1.0.5
 
 * I updated the *License* in the DESCRIPTION file which as of '07-05-2021' will be *Apache License Version 2.0*. Therefore I removed also the COPYRIGHTS file from the 'inst' directory

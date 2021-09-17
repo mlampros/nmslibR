@@ -15,9 +15,6 @@ The **nmslibR** package is a wrapper of the [Non-Metric Space Library (NMSLIB)](
 
 <br>
 
-**UPDATE 26-07-2018**: A [Singularity image file](http://mlampros.github.io/2018/07/26/singularity_containers/) is available in case that someone intends to run *nmslibR* on Ubuntu Linux (locally or in a cloud instance) with all package requirements pre-installed. This allows the user to utilize the *nmslibR* package without having to spend time on the installation process.
-
-<br>
 
 **Reference:**
 
@@ -288,16 +285,16 @@ Use the following link to report bugs/issues,
 
 ### **Citation:**
 
-If you use the code of this repository in your paper or research please cite both **nmslibR** and the **original articles / software** [https://cran.r-project.org/web/packages/nmslibR/citation.html](https://cran.r-project.org/web/packages/nmslibR/citation.html):
+If you use the code of this repository in your paper or research please cite both **nmslibR** and the **original articles / software** [https://CRAN.R-project.org/package=nmslibR/citation.html](https://CRAN.R-project.org/package=nmslibR/citation.html):
 
 <br>
 
 ```R
 @Manual{,
-  title = {{nmslibR}: Non Metric Space (Approximate) Library},
+  title = {{nmslibR}: Non Metric Space (Approximate) Library in R},
   author = {Lampros Mouselimis},
   year = {2021},
-  note = {R package version 1.0.5},
+  note = {R package version 1.0.6},
   url = {https://CRAN.R-project.org/package=nmslibR},
 }
 ```
