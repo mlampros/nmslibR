@@ -6,8 +6,8 @@
 \usage{
 KernelKnn_nmslib(
   data,
-  TEST_data = NULL,
   y,
+  TEST_data = NULL,
   k = 5,
   h = 1,
   weights_function = NULL,
@@ -27,9 +27,9 @@ KernelKnn_nmslib(
 \arguments{
 \item{data}{either a matrix or a scipy sparse matrix}
 
-\item{TEST_data}{a test dataset (in case of a matrix the \emph{TEST_data} should have equal number of columns with the \emph{data}). It is assumed that the \emph{TEST_data} is an unlabeled dataset}
-
 \item{y}{a numeric vector specifying the response variable (in classification the labels must be numeric from 1:Inf). The length of \emph{y} must equal the rows of the \emph{data} parameter}
+
+\item{TEST_data}{a test dataset (in case of a matrix the \emph{TEST_data} should have equal number of columns with the \emph{data}). It is assumed that the \emph{TEST_data} is an unlabeled dataset}
 
 \item{k}{an integer. The number of neighbours to return}
 

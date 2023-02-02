@@ -36,15 +36,12 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
   if (!inherits(x, "matrix")) stop("the 'x' parameter should be of type 'matrix'", call. = F)
 
   if (format == 'sparse_column_matrix') {
-
-    return(SCP$sparse$csc_matrix(x))}
-
+    return(SCP$sparse$csc_matrix(x))
+  }
   else if (format == 'sparse_row_matrix') {
-
-    return(SCP$sparse$csr_matrix(x))}
-
+    return(SCP$sparse$csr_matrix(x))
+  }
   else {
-
     stop("the function can take either a 'sparse_row_matrix' or a 'sparse_column_matrix' for the 'format' parameter as input", call. = F)
   }
 }
@@ -112,17 +109,12 @@ mat_2scipy_sparse = function(x, format = 'sparse_row_matrix') {
 TO_scipy_sparse = function(R_sparse_matrix) {
 
   if (inherits(R_sparse_matrix, "dgCMatrix")) {
-
     py_obj = SCP$sparse$csc_matrix(reticulate::tuple(R_sparse_matrix@x, R_sparse_matrix@i, R_sparse_matrix@p), shape = reticulate::tuple(R_sparse_matrix@Dim[1], R_sparse_matrix@Dim[2]))
   }
-
   else if (inherits(R_sparse_matrix, "dgRMatrix")) {
-
     py_obj = SCP$sparse$csr_matrix(reticulate::tuple(R_sparse_matrix@x, R_sparse_matrix@j, R_sparse_matrix@p), shape = reticulate::tuple(R_sparse_matrix@Dim[1], R_sparse_matrix@Dim[2]))
   }
-
   else {
-
     stop("the 'R_sparse_matrix' parameter should be either a 'dgCMatrix' or a 'dgRMatrix' sparse matrix", call. = F)
   }
 
@@ -138,6 +130,7 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' @param query_data_row a vector to query for
 #' @param query_data the query_data parameter should be of the same type with the \emph{input_data} parameter. Queries to query for
 #' @param k an integer. The number of neighbours to return
+#' @param include_query_data_row_index a boolean. If TRUE then the index of the query data row will be returned as well. It currently defaults to FALSE which means the first matched index is excluded from the results (this parameter will be removed in version 1.1.0 and the output behavior of the function will be changed too - see the deprecation warning)
 #' @param Index_Params a list of (optional) parameters to use in indexing (when creating the index)
 #' @param Time_Params a list of parameters to use in querying. Setting \emph{Time_Params} to NULL will reset
 #' @param space a character string (optional). The metric space to create for this index. Page 31 of the manual (see \emph{references}) explains all available inputs
@@ -145,9 +138,11 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' @param method a character string specifying the index method to use
 #' @param data_type a character string. One of 'DENSE_UINT8_VECTOR', 'DENSE_VECTOR', 'OBJECT_AS_STRING' or 'SPARSE_VECTOR'
 #' @param dtype a character string. Either 'FLOAT' or 'INT'
+#' @param index_filepath a character string specifying the path to a file, where an existing index is saved
+#' @param load_data a boolean. If TRUE then besides the index also the saved data will be loaded. This parameter is used when the \emph{index_filepath} parameter is not NULL (see the web links in the \emph{references} section for more details). The user might also have to specify the \emph{skip_optimized_index} parameter of the \emph{Index_Params} in the "init" method
+#' @param save_data a boolean. If TRUE then besides the index also the data will be saved (see the web links in the \emph{references} section for more details)
 #' @param print_progress a boolean (either TRUE or FALSE). Whether or not to display progress bar
 #' @param num_threads an integer. The number of threads to use
-#' @param index_filepath a character string specifying the path to a file, where an existing index is saved
 #' @param filename a character string specifying the path. The filename to save ( in case of the \emph{save_Index} method ) or the filename to load ( in case of the \emph{load_Index} method )
 #' @export
 #' @details
@@ -162,7 +157,22 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #'
 #' If the \emph{index_filepath} parameter is not NULL then an existing index will be loaded
 #'
-#' @references \emph{https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf}
+#' \emph{Incrementally} updating an already saved (and loaded) index is \emph{not} possible (see: https://github.com/nmslib/nmslib/issues/73)
+#'
+#' @references
+#'
+#' https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf
+#'
+#' https://github.com/nmslib/nmslib/blob/master/python_bindings/notebooks/search_vector_dense_optim.ipynb
+#'
+#' https://github.com/nmslib/nmslib/blob/master/python_bindings/notebooks/search_vector_dense_nonoptim.ipynb
+#'
+#' https://github.com/nmslib/nmslib/issues/356
+#'
+#' https://github.com/nmslib/nmslib/blob/master/manual/methods.md
+#'
+#' https://github.com/nmslib/nmslib/blob/master/manual/spaces.md
+#'
 #' @docType class
 #' @importFrom R6 R6Class
 #' @import reticulate
@@ -171,7 +181,8 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #' \describe{
 #'  \item{\code{NMSlib$new(input_data, Index_Params = NULL, Time_Params = NULL, space='l1',
 #'                         space_params = NULL, method = 'hnsw', data_type = 'DENSE_VECTOR',
-#'                         dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE)}}{}
+#'                         dtype = 'FLOAT', index_filepath = NULL, load_data = FALSE,
+#'                         print_progress = FALSE)}}{}
 #'
 #'  \item{\code{--------------}}{}
 #'
@@ -183,13 +194,14 @@ TO_scipy_sparse = function(R_sparse_matrix) {
 #'
 #'  \item{\code{--------------}}{}
 #'
-#'  \item{\code{save_Index(filename)}}{}
+#'  \item{\code{save_Index(filename, save_data = FALSE)}}{}
 #'  }
 #'
 #' @usage # init <- NMSlib$new(input_data, Index_Params = NULL, Time_Params = NULL,
 #' #                           space='l1', space_params = NULL, method = 'hnsw',
 #' #                           data_type = 'DENSE_VECTOR', dtype = 'FLOAT',
-#' #                           index_filepath = NULL, print_progress = FALSE)
+#' #                           index_filepath = NULL, load_data = FALSE,
+#' #                           print_progress = FALSE)
 #' @examples
 #'
 #' try({
@@ -225,13 +237,19 @@ NMSlib <- R6::R6Class("NMSlib",
 
                        public = list(
 
-                         initialize = function(input_data, Index_Params = NULL, Time_Params = NULL, space='l1', space_params = NULL, method = 'hnsw',
+                         initialize = function(input_data,
+                                               Index_Params = NULL,
+                                               Time_Params = NULL,
+                                               space = 'l1',
+                                               space_params = NULL,
+                                               method = 'hnsw',
+                                               data_type = 'DENSE_VECTOR',
+                                               dtype = 'FLOAT',
+                                               index_filepath = NULL,
+                                               load_data = FALSE,
+                                               print_progress = FALSE) {
 
-                                               data_type = 'DENSE_VECTOR', dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE) {
-
-
-                           if (inherits(input_data, "data.frame")) stop("the 'input_data' parameter is a data frame. For the function to run error free convert the data frame to a matrix", call. = F)
-
+                           if (inherits(input_data, "data.frame")) stop("The 'input_data' parameter is a data frame! You have to convert the data.frame to a matrix first!", call. = F)
 
                            # eval-parse to convert string to a variable
                            #-------------------------------------------
@@ -243,12 +261,10 @@ NMSlib <- R6::R6Class("NMSlib",
                            dtype = eval(parse(text = paste('DTYPE$', dtype, sep = "", collapse = "")))
 
 
-
                            # initialization of nmslib
                            #-------------------------
 
                            if (!is.null(space_params)) {
-
                              space_params = reticulate::dict(space_params)
                            }
 
@@ -265,9 +281,7 @@ NMSlib <- R6::R6Class("NMSlib",
                                private$index$addDataPointBatch(input_data[[ITEM]])                    # here it's important, in case of matrices, that the columns of each object are equal, otherwise it will throw an error
                              }
                            }
-
                            else {
-
                              private$index$addDataPointBatch(input_data)
                            }
 
@@ -278,18 +292,14 @@ NMSlib <- R6::R6Class("NMSlib",
                            if (is.null(index_filepath)) {                                      # if filepath is NULL create index, ...
 
                              if (is.null(Index_Params)) {
-
-                               private$index$createIndex( print_progress = print_progress )}
-
+                               private$index$createIndex( print_progress = print_progress )
+                             }
                              else {
-
                                private$index$createIndex( reticulate::dict(Index_Params), print_progress = print_progress )
                              }
                            }
-
-                           else {                                                             # ... else, load existing index from filepath
-
-                             private$index$loadIndex(index_filepath, print_progress)          # loads the index from disk
+                           else {                                                             # ... else, load existing index from filepath (loads the index from disk)
+                             private$index$loadIndex(index_filepath, load_data = load_data)
                            }
 
 
@@ -297,11 +307,9 @@ NMSlib <- R6::R6Class("NMSlib",
                            #------------------------------
 
                            if (is.null(Time_Params)) {
-
-                             private$index$setQueryTimeParams( Time_Params )}
-
+                             private$index$setQueryTimeParams( Time_Params )
+                           }
                            else {
-
                              private$index$setQueryTimeParams( reticulate::dict(Time_Params) )
                            }
                          },
@@ -310,15 +318,32 @@ NMSlib <- R6::R6Class("NMSlib",
                          # 'knnQuery' function       [ returns index and distance for a single row -- Finds the approximate (or exact when brute force is used) K nearest neighbours of a vector in the index ]
                          #--------------------
 
-                         Knn_Query = function(query_data_row, k = 5) {
+                         Knn_Query = function(query_data_row, k = 5, include_query_data_row_index = FALSE) {
 
-                           idx_dists_single_ROW = private$index$knnQuery(query_data_row, as.integer(k + 1))             # add 1 because I'll remove the first item ( see next line )
+                           if (lifecycle::is_present(include_query_data_row_index)) {
+
+                             lifecycle::deprecate_warn(
+                               when = "1.0.6",
+                               what = "Knn_Query(include_query_data_row_index)",
+                               details = "The 'include_query_data_row_index' parameter will be removed in version 1.1.0 and the output values and indices of the 'Knn_Query()' function will include also the (potential) value and index of the matched 'query_data_row' input! (currently is excluded by default)"
+                             )
+                           }
+
+                           idx_dists_single_ROW = private$index$knnQuery(query_data_row, as.integer(k + 1))           # add 1 because I'll remove the first item ( see next line )
 
                            indices = idx_dists_single_ROW[[1]]
-                           indices = indices[-1] + 1                                                                    # remove the first item as it represents the distance between a row with itself   &   account for the indexing differences betw. Python and R
-
+                           indices = indices + 1                     # account for the indexing differences betw. Python and R
                            values = idx_dists_single_ROW[[2]]
-                           values = values[-1]
+
+                           if (!include_query_data_row_index) {
+                             remove_index = 1                        # remove the 1st index
+                           }
+                           else {
+                             remove_index = k + 1                    # remove the last index
+                           }
+
+                           indices = indices[-remove_index]          # remove either the first or last index depending on the 'include_query_data_row_index' parameter as it includes also the distance between a row with itself [ !! this might not always true if the row doesn't exist in the data (new external data row) or if the distances of all "k" are 0.0, meaning that the 1st index (lowest distance) might not be input "query_data_row" but one of the other "k" nearest values (no match of the input with the lowest distance) ]
+                           values = values[-remove_index]
 
                            return(list(indices, values))
                          },
@@ -332,7 +357,6 @@ NMSlib <- R6::R6Class("NMSlib",
                            if (inherits(query_data, "data.frame")) stop("the 'query_data' parameter is a data frame. For the function to run error free convert the data frame to a matrix", call. = F)
 
                            tmp_lst = private$index$knnQueryBatch(query_data, as.integer(k + 1), as.integer(num_threads))        # add 1 to account for the indexing differences betw. Python and R  [ adjusted also in the Rcpp function ]
-
                            idx_dists_ = nmslib_idx_dist(tmp_lst, k, num_threads)                                                # Rcpp function [ parallelized ]
 
                            return(idx_dists_)
@@ -342,16 +366,13 @@ NMSlib <- R6::R6Class("NMSlib",
                          # 'saveIndex' function               [ Saves the index to disk ]
                          #---------------------
 
-                         save_Index = function(filename) {
-
-                           private$index$saveIndex(filename)
-
+                         save_Index = function(filename, save_data = FALSE) {
+                           private$index$saveIndex(filename, save_data = save_data)
                            invisible()
                          }
                        ),
 
                        private = list(
-
                          index = NULL
                        )
 )
@@ -365,7 +386,6 @@ NMSlib <- R6::R6Class("NMSlib",
 #' @keywords internal
 
 import_internal = function(function_name) {
-
   utils::getFromNamespace(function_name, "KernelKnn")
 }
 
@@ -396,52 +416,34 @@ inner_kernel_function = function(y_matrix, dist_matrix, Levels, weights_function
   if (is.null(Levels)) {                                                          # regression
 
     if (is.null(weights_function)) {
-
       out_ = rowMeans(y_matrix)
     }
-
     else if (is.function(weights_function)) {
-
       W_te = FUNCTION_weights(dist_matrix, weights_function)
-
       out_ = rowSums(y_matrix * W_te)
     }
-
     else if (is.character(weights_function) && nchar(weights_function) > 1) {
-
       W_te = FUN_kernels(weights_function, dist_matrix, h)
-
       out_ = rowSums(y_matrix * W_te)
     }
-
     else {
-
       stop('false input for the weights_function argument')
     }
   }
-
   else {                                                                          # classification
-
     if (is.null(weights_function)) {
-
       out_ = func_tbl_dist(y_matrix, sort(Levels))
-
-      colnames(out_) = paste0('class_', sort(Levels))}
-
+      colnames(out_) = paste0('class_', sort(Levels))
+    }
     else if (is.function(weights_function)) {
-
       W_te = FUNCTION_weights(dist_matrix, weights_function)
-
-      out_ = func_tbl(y_matrix, W_te, sort(Levels))}
-
+      out_ = func_tbl(y_matrix, W_te, sort(Levels))
+    }
     else if (is.character(weights_function) && nchar(weights_function) > 1) {
-
       W_te = FUN_kernels(weights_function, dist_matrix, h)
-
-      out_ = func_tbl(y_matrix, W_te, sort(Levels))}
-
+      out_ = func_tbl(y_matrix, W_te, sort(Levels))
+    }
     else {
-
       stop('false input for the weights_function argument')
     }
   }
@@ -493,39 +495,46 @@ inner_kernel_function = function(y_matrix, dist_matrix, Levels, weights_function
 #' }, silent=TRUE)
 
 
-KernelKnn_nmslib = function(data, TEST_data = NULL, y, k = 5, h = 1.0, weights_function = NULL, Levels = NULL, Index_Params = NULL,
-
-                            Time_Params = NULL, space='l1', space_params = NULL, method = 'hnsw', data_type = 'DENSE_VECTOR',
-
-                            dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE, num_threads = 1) {
+KernelKnn_nmslib = function(data,
+                            y,
+                            TEST_data = NULL,
+                            k = 5,
+                            h = 1.0,
+                            weights_function = NULL,
+                            Levels = NULL,
+                            Index_Params = NULL,
+                            Time_Params = NULL,
+                            space = 'l1',
+                            space_params = NULL,
+                            method = 'hnsw',
+                            data_type = 'DENSE_VECTOR',
+                            dtype = 'FLOAT',
+                            index_filepath = NULL,
+                            print_progress = FALSE,
+                            num_threads = 1) {
 
   if (inherits(data, "data.frame")) stop("the 'data' parameter is a data frame. For the function to run error free convert the data frame to a matrix", call. = F)
 
   if (!is.null(TEST_data)) {
-
     if (inherits(TEST_data, "data.frame")) stop("the 'TEST_data' parameter is a data frame. For the function to run error free convert the data frame to a matrix", call. = F)
   }
 
   init_nmslib = NMSlib$new(input_data = data, Index_Params, Time_Params, space, space_params, method, data_type, dtype, index_filepath, print_progress)
 
   if (!is.null(TEST_data)) {
-
-    knn_idx_dist = init_nmslib$knn_Query_Batch(TEST_data, k, num_threads)}
-
+    knn_idx_dist = init_nmslib$knn_Query_Batch(TEST_data, k, num_threads)
+  }
   else {
-
     knn_idx_dist = init_nmslib$knn_Query_Batch(data, k, num_threads)
   }
 
   out_y = y_idxs(knn_idx_dist$knn_idx, y, num_threads)
 
   if (!check_NaN_Inf(out_y)) {
-
     warning("the output includes missing values", call. = F)                                   # in first place just print a warning in case of missing values
   }
 
   out_ = inner_kernel_function(out_y, knn_idx_dist$knn_dist, Levels, weights_function, h)
-
   return(out_)
 }
 
@@ -572,58 +581,71 @@ KernelKnn_nmslib = function(data, TEST_data = NULL, y, k = 5, h = 1.0, weights_f
 #' }
 
 
-KernelKnnCV_nmslib = function(data, y, k = 5, folds = 5, h = 1.0, weights_function = NULL, Levels = NULL, Index_Params = NULL,
-
-                              Time_Params = NULL, space='l1', space_params = NULL, method = 'hnsw', data_type = 'DENSE_VECTOR',
-
-                              dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE, num_threads = 1, seed_num = 1) {
-
+KernelKnnCV_nmslib = function(data,
+                              y,
+                              k = 5,
+                              folds = 5,
+                              h = 1.0,
+                              weights_function = NULL,
+                              Levels = NULL,
+                              Index_Params = NULL,
+                              Time_Params = NULL,
+                              space = 'l1',
+                              space_params = NULL,
+                              method = 'hnsw',
+                              data_type = 'DENSE_VECTOR',
+                              dtype = 'FLOAT',
+                              index_filepath = NULL,
+                              print_progress = FALSE,
+                              num_threads = 1,
+                              seed_num = 1) {
   start = Sys.time()
-
-  #------------------------------------ import internal functions from KernelKnn
-
+  #-------------------------------------------- import internal functions from KernelKnn
   class_folds = import_internal('class_folds')
   regr_folds = import_internal('regr_folds')
-
-  #------------------------------------
+  #--------------------------------------------
 
   if (is.null(Levels)) {
-
     set.seed(seed_num)
-    n_folds = regr_folds(folds, y)}
-
+    n_folds = regr_folds(folds, y)
+  }
   else {
-
     set.seed(seed_num)
     n_folds = class_folds(folds, as.factor(y))
   }
 
   if (!all(unlist(lapply(n_folds, length)) > 5)) stop('Each fold has less than 5 observations. Consider decreasing the number of folds or increasing the size of the data.')
-
   tmp_fit = list()
-
-  cat('\n') ; cat('cross-validation starts ..', '\n')
-
+  cat('\n')
+  cat('cross-validation starts ..', '\n')
   pb <- txtProgressBar(min = 0, max = folds, style = 3); cat('\n')
 
   for (i in 1:folds) {
-
-    tmp_fit[[i]] = KernelKnn_nmslib(data = data[unlist(n_folds[-i]), ], TEST_data = data[unlist(n_folds[i]), ], y = y[unlist(n_folds[-i])], k, h,
-
-                                    weights_function, Levels, Index_Params, Time_Params, space, space_params, method, data_type,
-
-                                    dtype, index_filepath, print_progress, num_threads)
+    tmp_fit[[i]] = KernelKnn_nmslib(data = data[unlist(n_folds[-i]), ],
+                                    y = y[unlist(n_folds[-i])],
+                                    TEST_data = data[unlist(n_folds[i]), ],
+                                    k = k,
+                                    h = h,
+                                    weights_function = weights_function,
+                                    Levels = Levels,
+                                    Index_Params = Index_Params,
+                                    Time_Params = Time_Params,
+                                    space = space,
+                                    space_params = space_params,
+                                    method = method,
+                                    data_type = data_type,
+                                    dtype = dtype,
+                                    index_filepath = index_filepath,
+                                    print_progress = print_progress,
+                                    num_threads = num_threads)
     setTxtProgressBar(pb, i)
   }
 
   close(pb); cat('\n')
-
   end = Sys.time()
-
   t = end - start
-
-  cat('time to complete :', t, attributes(t)$units, '\n'); cat('\n');
-
+  cat('time to complete :', t, attributes(t)$units, '\n')
+  cat('\n')
   return(list(preds = tmp_fit, folds = n_folds))
 }
 

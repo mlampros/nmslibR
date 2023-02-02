@@ -8,7 +8,8 @@
 # init <- NMSlib$new(input_data, Index_Params = NULL, Time_Params = NULL,
 #                           space='l1', space_params = NULL, method = 'hnsw',
 #                           data_type = 'DENSE_VECTOR', dtype = 'FLOAT',
-#                           index_filepath = NULL, print_progress = FALSE)
+#                           index_filepath = NULL, load_data = FALSE,
+#                           print_progress = FALSE)
 }
 \description{
 Non metric space library
@@ -25,6 +26,8 @@ the \emph{knn_Query_Batch} Performs multiple queries on the index, distributing 
 the \emph{save_Index} function saves the index to disk
 
 If the \emph{index_filepath} parameter is not NULL then an existing index will be loaded
+
+\emph{Incrementally} updating an already saved (and loaded) index is \emph{not} possible (see: https://github.com/nmslib/nmslib/issues/73)
 }
 \section{Methods}{
 
@@ -32,7 +35,8 @@ If the \emph{index_filepath} parameter is not NULL then an existing index will b
 \describe{
  \item{\code{NMSlib$new(input_data, Index_Params = NULL, Time_Params = NULL, space='l1',
                         space_params = NULL, method = 'hnsw', data_type = 'DENSE_VECTOR',
-                        dtype = 'FLOAT', index_filepath = NULL, print_progress = FALSE)}}{}
+                        dtype = 'FLOAT', index_filepath = NULL, load_data = FALSE,
+                        print_progress = FALSE)}}{}
 
  \item{\code{--------------}}{}
 
@@ -44,7 +48,7 @@ If the \emph{index_filepath} parameter is not NULL then an existing index will b
 
  \item{\code{--------------}}{}
 
- \item{\code{save_Index(filename)}}{}
+ \item{\code{save_Index(filename, save_data = FALSE)}}{}
  }
 }
 
@@ -77,7 +81,17 @@ try({
 }, silent=TRUE)
 }
 \references{
-\emph{https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf}
+https://github.com/nmslib/nmslib/blob/master/manual/latex/manual.pdf
+
+https://github.com/nmslib/nmslib/blob/master/python_bindings/notebooks/search_vector_dense_optim.ipynb
+
+https://github.com/nmslib/nmslib/blob/master/python_bindings/notebooks/search_vector_dense_nonoptim.ipynb
+
+https://github.com/nmslib/nmslib/issues/356
+
+https://github.com/nmslib/nmslib/blob/master/manual/methods.md
+
+https://github.com/nmslib/nmslib/blob/master/manual/spaces.md
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -104,6 +118,7 @@ try({
   data_type = "DENSE_VECTOR",
   dtype = "FLOAT",
   index_filepath = NULL,
+  load_data = FALSE,
   print_progress = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -129,6 +144,8 @@ try({
 
 \item{\code{index_filepath}}{a character string specifying the path to a file, where an existing index is saved}
 
+\item{\code{load_data}}{a boolean. If TRUE then besides the index also the saved data will be loaded. This parameter is used when the \emph{index_filepath} parameter is not NULL (see the web links in the \emph{references} section for more details). The user might also have to specify the \emph{skip_optimized_index} parameter of the \emph{Index_Params} in the "init" method}
+
 \item{\code{print_progress}}{a boolean (either TRUE or FALSE). Whether or not to display progress bar}
 }
 \if{html}{\out{</div>}}
@@ -139,7 +156,7 @@ try({
 \if{latex}{\out{\hypertarget{method-Knn_Query}{}}}
 \subsection{Method \code{Knn_Query()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NMSlib$Knn_Query(query_data_row, k = 5)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$Knn_Query(query_data_row, k = 5, include_query_data_row_index = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -148,6 +165,8 @@ try({
 \item{\code{query_data_row}}{a vector to query for}
 
 \item{\code{k}}{an integer. The number of neighbours to return}
+
+\item{\code{include_query_data_row_index}}{a boolean. If TRUE then the index of the query data row will be returned as well. It currently defaults to FALSE which means the first matched index is excluded from the results (this parameter will be removed in version 1.1.0 and the output behavior of the function will be changed too - see the deprecation warning)}
 }
 \if{html}{\out{</div>}}
 }
@@ -177,13 +196,15 @@ try({
 \if{latex}{\out{\hypertarget{method-save_Index}{}}}
 \subsection{Method \code{save_Index()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{NMSlib$save_Index(filename)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{NMSlib$save_Index(filename, save_data = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{filename}}{a character string specifying the path. The filename to save ( in case of the \emph{save_Index} method ) or the filename to load ( in case of the \emph{load_Index} method )}
+
+\item{\code{save_data}}{a boolean. If TRUE then besides the index also the data will be saved (see the web links in the \emph{references} section for more details)}
 }
 \if{html}{\out{</div>}}
 }

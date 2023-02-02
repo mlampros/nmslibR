@@ -184,7 +184,7 @@ to validate that a user is in the python version where *nmslibR* is installed.
 
 
 
-#### **Windows OS**
+#### **Windows OS** (the instructions were tested with the version 1.0.0 of the R package, thus use with caution)
 
 <br>
 
@@ -294,7 +294,7 @@ If you use the code of this repository in your paper or research please cite bot
   title = {{nmslibR}: Non Metric Space (Approximate) Library in R},
   author = {Lampros Mouselimis},
   year = {2021},
-  note = {R package version 1.0.6},
+  note = {R package version 1.0.7},
   url = {https://CRAN.R-project.org/package=nmslibR},
 }
 ```

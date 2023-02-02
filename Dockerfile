@@ -10,7 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive; apt-get -y update && \
  pip3 install numpy && \
  pip3 install scipy && \
  pip3 install --no-binary :all: nmslib && \
- R -e "install.packages(c( 'Rcpp', 'reticulate', 'R6', 'Matrix', 'KernelKnn', 'utils', 'RcppArmadillo', 'testthat', 'covr', 'knitr', 'rmarkdown', 'remotes' ), repos =  'https://cloud.r-project.org/' )" && \
+ R -e "install.packages(c( 'Rcpp', 'reticulate', 'R6', 'Matrix', 'KernelKnn', 'utils', 'RcppArmadillo', 'testthat', 'covr', 'knitr', 'rmarkdown', 'lifecycle', 'remotes' ), repos =  'https://cloud.r-project.org/' )" && \
  R -e "remotes::install_github('mlampros/nmslibR', upgrade = 'never', dependencies = FALSE, repos = 'https://cloud.r-project.org/')" && \
  apt-get autoremove -y && \
  apt-get clean

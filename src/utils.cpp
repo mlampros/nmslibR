@@ -1,7 +1,7 @@
 # include <RcppArmadillo.h>
 // [[Rcpp::depends("RcppArmadillo")]]
 // [[Rcpp::plugins(openmp)]]
-// [[Rcpp::plugins(cpp11)]]
+// [[Rcpp::plugins(cpp17)]]
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -20,13 +20,9 @@ Rcpp::List nmslib_idx_dist(std::vector<std::vector<std::vector<double> > >& inpu
   #endif
 
   unsigned int ROWS = input_list.size();
-
   arma::mat indices(ROWS, k), distances(ROWS, k);
-
   indices.fill(arma::datum::nan);
-
   distances.fill(arma::datum::nan);
-
   unsigned int i, j;
 
   #ifdef _OPENMP
@@ -35,9 +31,7 @@ Rcpp::List nmslib_idx_dist(std::vector<std::vector<std::vector<double> > >& inpu
   for (i = 0; i < ROWS; i++) {
 
     std::vector<std::vector<double> > inner_vec = input_list[i];
-
     std::vector<double> inner_idx = inner_vec[0];
-
     std::vector<double> inner_dist = inner_vec[1];                         // it is possible that the length of a vector differs [ not equal to k -- in that case it takes the value of NA ]
 
     for (j = 1; j < inner_dist.size(); j++) {                              // indexing of inner vector begins from 1
@@ -70,11 +64,8 @@ arma::mat y_idxs(arma::mat& idxs, std::vector<double>& y, int threads = 1) {
   #endif
 
   unsigned int NROWS = idxs.n_rows;
-
   unsigned int NCOLS = idxs.n_cols;
-
   arma::mat out(NROWS, NCOLS);
-
   unsigned int i,j;
 
   #ifdef _OPENMP
@@ -89,8 +80,8 @@ arma::mat y_idxs(arma::mat& idxs, std::vector<double>& y, int threads = 1) {
         #ifdef _OPENMP
         #pragma omp atomic write
         #endif
-        out(i,j) = arma::datum::nan;}
-
+        out(i,j) = arma::datum::nan;
+      }
       else {
 
         #ifdef _OPENMP
@@ -105,14 +96,12 @@ arma::mat y_idxs(arma::mat& idxs, std::vector<double>& y, int threads = 1) {
 }
 
 
-
 // it returns TRUE if the matrix does not include NaN's or +/- Inf
 // it returns FALSE if at least one value is NaN or +/- Inf
 //
 
 // [[Rcpp::export]]
 bool check_NaN_Inf(arma::mat x) {
-
   return x.is_finite();
 }
 

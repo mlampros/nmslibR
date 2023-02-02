@@ -1,4 +1,13 @@
 
+## nmslibR 1.0.7
+
+* I've added the *include_query_data_row_index* parameter to the *Knn_Query()* method of the *NMSlib* R6 Class and at the same time I added a deprecation warning for this parameter, because this method currently excludes by default the first output index and value. By setting the *include_query_data_row_index* to TRUE the first output index and value will be returned. This change will take effect in version 1.1.0 and the *Knn_Query()* method will return the first output index and value by default.
+* I added the *"save_data"* parameter to the *"save_Index()"* method and the *"load_data"* parameter to the *"initialize()"* method of the *'NMSlib()'* R6 class. I updated the documentation and references sections as well
+* I've modified the *DESCRIPTION* and the *package.R* file by adding only comments related to a new configuration type in the reticulate R package (see: https://github.com/rstudio/reticulate/issues/883#issuecomment-775552812)
+* I updated the *Makevars* and the .cpp files from C++11 to C++17 because I received the following NOTE during checking of the package: *Specified C++11: please update to current default of C++17*
+* I updated the *.Rbuildignore* file to exclude the *LICENSE.md* file because it gives a NOTE during CRAN checking
+
+
 ## nmslibR 1.0.6
 
 * I've added a 'packageStartupMessage' informing the user in case of the error 'attempt to apply non-function' that he/she has to use the 'reticulate::py_config()' before loading the package (in a new R session)
